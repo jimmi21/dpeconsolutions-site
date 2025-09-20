@@ -13,12 +13,12 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-// ===== PRO TAX CALCULATOR =====
+// ===== PRO TAX CALCULATOR V2 (same logic) =====
 
-// Editable tax tables by year (example values). Update here when ο νόμος αλλάξει.
+// Tax tables by year
 const TAX_TABLES = {
   "2025": {
-    EMP: [ // Μισθωτά/Συντάξεις & Επιχειρ. δραστηριότητα (ίδια κλιμάκια εδώ)
+    EMP: [
       { upTo: 10000, rate: 0.09 },
       { upTo: 20000, rate: 0.22 },
       { upTo: 30000, rate: 0.28 },
@@ -46,6 +46,23 @@ const TAX_TABLES = {
     ]
   }
 };
+
+function childrenCredit(children){
+  if (children <= 0) return 777;
+  if (children === 1) return 900;
+  if (children === 2) return 1120;
+  if (children === 3) return 1340;
+  if (children === 4) return 1580;
+  if (children === 5) return 1780;
+  return 1780 + (children - 5) * 220;
+}
+function phasedCredit(credit, salaryIncome, children){
+  if (children >= 5) return credit;
+  const excess = Math.max(0, (salaryIncome||0) - 12000);
+  const steps = Math.floor(excess / 1000);
+  const reduction = steps * 20;
+  return Math.max(0, credit - reduction);
+}
 
 function calcProgressiveDetailed(amount, brackets){
   let remaining = Math.max(0, amount||0);
@@ -75,12 +92,10 @@ function calcProgressiveDetailed(amount, brackets){
 function fmtEUR(n){
   return new Intl.NumberFormat('el-GR', { style:'currency', currency:'EUR', maximumFractionDigits:0 }).format(n||0);
 }
-
 function toCSV(rows){
   const head = ['Κλιμάκιο','Ποσό','Συντελεστής','Φόρος'];
   const body = rows.map(r=>[r.range, r.amount, (r.rate*100).toFixed(0)+'%', Math.round(r.tax)]);
-  const all = [head, ...body].map(line=>line.join(';')).join('\n');
-  return all;
+  return [head, ...body].map(line=>line.join(';')).join('\n');
 }
 
 // Elements
@@ -90,12 +105,17 @@ const elDuty = document.getElementById('businessDuty');
 const elSalary = document.getElementById('incSalary');
 const elBus = document.getElementById('incBusiness');
 const elRent = document.getElementById('incRental');
+const elChildren = document.getElementById('children');
+const elPrepaid = document.getElementById('prepaid');
+const elCredits = document.getElementById('credits');
 
 const outSalary = document.getElementById('taxSalary');
 const outBusiness = document.getElementById('taxBusiness');
 const outAdvance = document.getElementById('taxAdvance');
 const outRent = document.getElementById('taxRental');
 const outDuty = document.getElementById('taxDuty');
+const outPrepaid = document.getElementById('taxPrepaid');
+const outCredits = document.getElementById('taxCredits');
 const outTotal = document.getElementById('taxTotal');
 
 const tblSalary = document.querySelector('#tblSalary tbody');
@@ -130,39 +150,50 @@ function calculate(){
   const salary = Math.max(0, parseFloat(elSalary.value)||0);
   const business = Math.max(0, parseFloat(elBus.value)||0);
   const rental = Math.max(0, parseFloat(elRent.value)||0);
+  const children = Math.max(0, Math.floor(parseFloat(elChildren.value)||0));
+  const prepaid = Math.max(0, parseFloat(elPrepaid.value)||0);
+  const credits = Math.max(0, parseFloat(elCredits.value)||0);
 
   const detS = calcProgressiveDetailed(salary, t.EMP);
   const detB = calcProgressiveDetailed(business, t.EMP);
   const detR = calcProgressiveDetailed(rental, t.RENT);
 
-  const advance = Math.round(detB.total * advRate);
-  const total = detS.total + detB.total + detR.total + advance + duty;
+  const baseCred = childrenCredit(children);
+  const phased = phasedCredit(baseCred, salary, children);
+  const appliedCredit = Math.min(detS.total, Math.round(phased));
+  const taxS_after = Math.max(0, detS.total - appliedCredit);
 
-  outSalary.textContent = fmtEUR(detS.total);
+  const advance = Math.round(detB.total * advRate);
+  const grossTotal = taxS_after + detB.total + detR.total + advance + duty;
+  const final = grossTotal - prepaid - credits;
+  const finalDisplay = (final>=0) ? fmtEUR(final) : (fmtEUR(Math.abs(final)) + ' επιστρεπτέο');
+
+  outSalary.textContent = fmtEUR(taxS_after);
   outBusiness.textContent = fmtEUR(detB.total);
   outAdvance.textContent = fmtEUR(advance);
   outRent.textContent = fmtEUR(detR.total);
   outDuty.textContent = fmtEUR(duty);
-  outTotal.textContent = fmtEUR(total);
+  outPrepaid.textContent = '-' + fmtEUR(prepaid);
+  outCredits.textContent = '-' + fmtEUR(credits);
+  outTotal.textContent = finalDisplay;
 
   renderRows(tblSalary, detS.rows);
   renderRows(tblBusiness, detB.rows);
   renderRows(tblRent, detR.rows);
 
-  // Store last inputs
-  const payload = {year, advRate, duty, salary, business, rental};
-  try{ localStorage.setItem('finora_calc', JSON.stringify(payload)); }catch{}
+  try{
+    localStorage.setItem('finora_calc_v2_dark', JSON.stringify({year, advRate, duty, salary, business, rental, children, prepaid, credits}));
+  }catch{}
 }
 
 document.getElementById('calcBtn')?.addEventListener('click', calculate);
 document.getElementById('clearBtn')?.addEventListener('click', ()=>{
-  [elSalary, elBus, elRent, elDuty].forEach(el=>el.value='');
+  [elSalary, elBus, elRent, elDuty, elChildren, elPrepaid, elCredits].forEach(el=>el.value='');
   elAdv.value='0'; elYear.value='2025';
   calculate();
 });
 document.getElementById('printBtn')?.addEventListener('click', ()=>window.print());
 document.getElementById('csvBtn')?.addEventListener('click', ()=>{
-  // Combine CSV from all three tables
   const year = elYear.value;
   const blocks = [
     {title:'Μισθωτά/Συντάξεις', rows: readRows(tblSalary)},
@@ -171,8 +202,8 @@ document.getElementById('csvBtn')?.addEventListener('click', ()=>{
   ];
   let csv = `Έτος;${year}\n`;
   csv += `\nΜισθωτά/Συντάξεις\n` + toCSV(blocks[0].rows);
-  csv += `\n\nΕπιχειρ. δραστηριότητα\n` + toCSV(blocks[1].rows);
-  csv += `\n\nΑκίνητα\n` + toCSV(blocks[2].rows);
+  csv += `\n\νΕπιχειρ. δραστηριότητα\n` + toCSV(blocks[1].rows);
+  csv += `\n\νΑκίνητα\n` + toCSV(blocks[2].rows);
   const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -197,19 +228,20 @@ function readRows(tbody){
   return rows;
 }
 
-// Load last inputs if any
 try{
-  const raw = localStorage.getItem('finora_calc');
+  const raw = localStorage.getItem('finora_calc_v2_dark');
   if (raw){
     const p = JSON.parse(raw);
-    elYear.value = p.year||'2025';
-    elAdv.value = String(p.advRate||'0');
-    elDuty.value = p.duty||'';
-    elSalary.value = p.salary||'';
-    elBus.value = p.business||'';
-    elRent.value = p.rental||'';
+    document.getElementById('taxYear').value = p.year||'2025';
+    document.getElementById('advanceRate').value = String(p.advRate||'0');
+    document.getElementById('businessDuty').value = p.duty||'';
+    document.getElementById('incSalary').value = p.salary||'';
+    document.getElementById('incBusiness').value = p.business||'';
+    document.getElementById('incRental').value = p.rental||'';
+    document.getElementById('children').value = p.children||'';
+    document.getElementById('prepaid').value = p.prepaid||'';
+    document.getElementById('credits').value = p.credits||'';
   }
 }catch{}
 
-calculate(); // initial render
-
+calculate();

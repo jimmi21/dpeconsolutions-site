@@ -1,18 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
   <defs>
     <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0" stop-color="#22d3ee" stop-opacity=".25"/>
-      <stop offset="1" stop-color="#2563eb" stop-opacity=".25"/>
+      <stop offset="0" stop-color="#22d3ee" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#60a5fa" stop-opacity=".18"/>
     </linearGradient>
     <pattern id="dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
-      <circle cx="1" cy="1" r="1" fill="#e6eef8"/>
+      <circle cx="1" cy="1" r="1" fill="#2a3b5a"/>
     </pattern>
   </defs>
-  <rect width="1000" height="620" fill="#ffffff"/>
+  <rect width="1000" height="620" fill="#0f1626"/>
   <rect x="80" y="80" width="840" height="420" rx="22" fill="url(#g1)" />
-  <rect x="100" y="100" width="800" height="380" rx="18" fill="url(#dots)" stroke="#e6eef8"/>
-  <g transform="translate(140,140)" stroke="#2563eb" fill="none" stroke-width="3" opacity="0.9">
+  <rect x="100" y="100" width="800" height="380" rx="18" fill="url(#dots)" stroke="#2a3b5a"/>
+  <g transform="translate(140,140)" stroke="#60a5fa" fill="none" stroke-width="3" opacity="0.9">
     <path d="M0 300 L60 240 L120 260 L180 200 L240 220 L300 160 L360 180 L420 120" stroke-linecap="round"/>
-    <line x1="0" y1="340" x2="720" y2="340" stroke-opacity="0.5"/>
+    <line x1="0" y1="340" x2="720" y2="340" stroke-opacity="0.35"/>
   </g>
 </svg>

@@ -7,7 +7,7 @@
   <meta name="description" content="Finora Accounting — λογιστικές υπηρεσίες, μισθοδοσία, έναρξη/στήριξη επιχειρήσεων, συμβουλευτική. Επαγγελματική υποστήριξη σε όλη την Ελλάδα." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=procalc" />
+  <link rel="stylesheet" href="styles.css?v=procalc2dark" />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -202,7 +202,7 @@
     <section id="calculator" class="section">
       <div class="container">
         <h2>Υπολογιστής Φόρου</h2>
-        <p class="lead">Ενδεικτικός υπολογισμός φόρου εισοδήματος με δυνατότητα ανάλυσης ανά κλιμάκιο.</p>
+        <p class="lead">Ενδεικτικός υπολογισμός φόρου εισοδήματος με δυνατότητα ανάλυσης ανά κλιμάκιο & οικογενειακές μειώσεις.</p>
 
         <div class="card calc-pro">
           <div class="calc-controls">
@@ -235,25 +235,38 @@
                 <input type="number" id="incRental" min="0" step="100" placeholder="π.χ. 9000" />
               </label>
             </div>
+            <div class="row">
+              <label>Εξαρτώμενα τέκνα
+                <input type="number" id="children" min="0" step="1" placeholder="0" />
+              </label>
+              <label>Πληρωμές έναντι/παρακρατήσεις (–€)
+                <input type="number" id="prepaid" min="0" step="50" placeholder="π.χ. 1200" />
+              </label>
+              <label>Λοιπές πιστώσεις φόρου (–€)
+                <input type="number" id="credits" min="0" step="50" placeholder="π.χ. 300" />
+              </label>
+            </div>
             <div class="row actions">
               <button class="btn" id="calcBtn">Υπολογισμός</button>
               <button class="btn ghost" id="clearBtn">Καθαρισμός</button>
               <button class="btn ghost" id="printBtn">Εκτύπωση / PDF</button>
               <button class="btn ghost" id="csvBtn">Λήψη CSV</button>
             </div>
-            <p class="note">Σημ.: Ο υπολογισμός είναι ενδεικτικός. Δεν περιλαμβάνει τυχόν απαλλαγές, εκπτώσεις, εισφορές, ελάχιστο τεκμαρτό κέρδος ή ειδικές ρυθμίσεις. Για οριστική εκτίμηση, επικοινωνήστε με τη Finora Accounting.</p>
+            <p class="note">Σημ.: Ο υπολογισμός είναι ενδεικτικός. Δεν περιλαμβάνει ειδικές εκπτώσεις/απαλλαγές, εισφορές, ελάχιστο τεκμαρτό, παρακρατήσεις ανά πηγή με ακρίβεια ή αλλοδαπή πίστωση. Για οριστική εκτίμηση, επικοινωνήστε με τη Finora.</p>
           </div>
 
           <div class="calc-results">
             <div class="summary card">
               <div class="result-head">Σύνοψη</div>
-              <div class="row"><span>Φόρος Μισθωτών/Συντάξεων:</span><strong id="taxSalary">—</strong></div>
+              <div class="row"><span>Φόρος Μισθωτών/Συντάξεων (με μείωση τέκνων):</span><strong id="taxSalary">—</strong></div>
               <div class="row"><span>Φόρος Επιχειρ. Δραστηριότητας:</span><strong id="taxBusiness">—</strong></div>
               <div class="row"><span>Προκαταβολή (σε επιχειρ.):</span><strong id="taxAdvance">—</strong></div>
               <div class="row"><span>Φόρος Ακινήτων:</span><strong id="taxRental">—</strong></div>
               <div class="row"><span>Τέλος επιτηδεύματος:</span><strong id="taxDuty">—</strong></div>
+              <div class="row"><span>Προπληρωμές/Παρακρατήσεις (αφαιρούνται):</span><strong id="taxPrepaid">—</strong></div>
+              <div class="row"><span>Λοιπές πιστώσεις (αφαιρούνται):</span><strong id="taxCredits">—</strong></div>
               <div class="sep"></div>
-              <div class="row total"><span>Συνολικό ποσό:</span><strong id="taxTotal">—</strong></div>
+              <div class="row total"><span>Συνολικό πληρωτέο/επιστρεπτέο:</span><strong id="taxTotal">—</strong></div>
             </div>
 
             <div class="breakdowns">
@@ -272,6 +285,7 @@
             </div>
           </div>
         </div>
+        <small class="disclaimer">Κλίμακες (ενδεικτικά 2024/2025): Μισθωτά/Επιχειρ. 9%–22%–28%–36%–44%. Ακίνητα 15%–35%–45%. Μείωση φόρου μισθωτών/συντάξεων: 777€ χωρίς τέκνα, 900€ (1 τέκνο), 1.120€ (2), 1.340€ (3), 1.580€ (4), 1.780€ (5), +220€ για κάθε επιπλέον τέκνο. Μείωση κατά 20€ ανά 1.000€ εισοδήματος μισθωτών πάνω από 12.000€, εκτός εάν ο φορολογούμενος έχει ≥5 τέκνα.</small>
       </div>
     </section>
 
@@ -354,6 +368,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=procalc"></script>
+  <script src="script.js?v=procalc2"></script>
 </body>
 </html>
