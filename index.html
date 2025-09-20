@@ -7,7 +7,7 @@
   <meta name="description" content="Finora Accounting — λογιστικές υπηρεσίες, μισθοδοσία, έναρξη/στήριξη επιχειρήσεων, συμβουλευτική. Επαγγελματική υποστήριξη σε όλη την Ελλάδα." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=procalc" />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -202,20 +202,76 @@
     <section id="calculator" class="section">
       <div class="container">
         <h2>Υπολογιστής Φόρου</h2>
-        <p class="lead">Γρήγορος υπολογισμός φόρου εισοδήματος μέσω του εργαλείου του forin.gr.</p>
-        <div class="calc-frame card">
-          <iframe id="calcFrame" title="Forin.gr - Υπολογισμός φόρου εισοδήματος"
-            src="https://www.forin.gr/tools/foros-eisodhmatos"
-            loading="lazy"
-            referrerpolicy="no-referrer"
-            sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation">
-          </iframe>
-          <div id="calcFallback" class="calc-fallback">
-            Δεν φορτώνει μέσα στη σελίδα; 
-            <a href="https://www.forin.gr/tools/foros-eisodhmatos" target="_blank" rel="noopener">Ανοίξτε τον υπολογιστή φόρου</a> σε νέα καρτέλα.
+        <p class="lead">Ενδεικτικός υπολογισμός φόρου εισοδήματος με δυνατότητα ανάλυσης ανά κλιμάκιο.</p>
+
+        <div class="card calc-pro">
+          <div class="calc-controls">
+            <div class="row">
+              <label>Έτος
+                <select id="taxYear">
+                  <option value="2025">2025</option>
+                  <option value="2024">2024</option>
+                </select>
+              </label>
+              <label>Προκαταβολή φόρου (% για επιχειρ. δραστηριότητα)
+                <select id="advanceRate">
+                  <option value="0">0%</option>
+                  <option value="0.55">55%</option>
+                  <option value="1.00">100%</option>
+                </select>
+              </label>
+              <label>Τέλος επιτηδεύματος (€ — προαιρετικό)
+                <input type="number" id="businessDuty" min="0" step="10" placeholder="π.χ. 650" />
+              </label>
+            </div>
+            <div class="row">
+              <label>Μισθωτές/Συντάξεις (€)
+                <input type="number" id="incSalary" min="0" step="100" placeholder="π.χ. 18000" />
+              </label>
+              <label>Επιχειρ. δραστηριότητα (€)
+                <input type="number" id="incBusiness" min="0" step="100" placeholder="π.χ. 15000" />
+              </label>
+              <label>Ακίνητα (€)
+                <input type="number" id="incRental" min="0" step="100" placeholder="π.χ. 9000" />
+              </label>
+            </div>
+            <div class="row actions">
+              <button class="btn" id="calcBtn">Υπολογισμός</button>
+              <button class="btn ghost" id="clearBtn">Καθαρισμός</button>
+              <button class="btn ghost" id="printBtn">Εκτύπωση / PDF</button>
+              <button class="btn ghost" id="csvBtn">Λήψη CSV</button>
+            </div>
+            <p class="note">Σημ.: Ο υπολογισμός είναι ενδεικτικός. Δεν περιλαμβάνει τυχόν απαλλαγές, εκπτώσεις, εισφορές, ελάχιστο τεκμαρτό κέρδος ή ειδικές ρυθμίσεις. Για οριστική εκτίμηση, επικοινωνήστε με τη Finora Accounting.</p>
+          </div>
+
+          <div class="calc-results">
+            <div class="summary card">
+              <div class="result-head">Σύνοψη</div>
+              <div class="row"><span>Φόρος Μισθωτών/Συντάξεων:</span><strong id="taxSalary">—</strong></div>
+              <div class="row"><span>Φόρος Επιχειρ. Δραστηριότητας:</span><strong id="taxBusiness">—</strong></div>
+              <div class="row"><span>Προκαταβολή (σε επιχειρ.):</span><strong id="taxAdvance">—</strong></div>
+              <div class="row"><span>Φόρος Ακινήτων:</span><strong id="taxRental">—</strong></div>
+              <div class="row"><span>Τέλος επιτηδεύματος:</span><strong id="taxDuty">—</strong></div>
+              <div class="sep"></div>
+              <div class="row total"><span>Συνολικό ποσό:</span><strong id="taxTotal">—</strong></div>
+            </div>
+
+            <div class="breakdowns">
+              <div class="card">
+                <h4>Ανάλυση — Μισθωτά/Συντάξεις</h4>
+                <table class="tbl" id="tblSalary"><thead><tr><th>Κλιμάκιο</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody></tbody></table>
+              </div>
+              <div class="card">
+                <h4>Ανάλυση — Επιχειρ. δραστηριότητα</h4>
+                <table class="tbl" id="tblBusiness"><thead><tr><th>Κλιμάκιο</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody></tbody></table>
+              </div>
+              <div class="card">
+                <h4>Ανάλυση — Ακίνητα</h4>
+                <table class="tbl" id="tblRental"><thead><tr><th>Κλιμάκιο</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody></tbody></table>
+              </div>
+            </div>
           </div>
         </div>
-        <small class="disclaimer">Το εργαλείο φιλοξενείται από το forin.gr. Τα αποτελέσματα είναι ενδεικτικά και δεν αποτελούν φορολογική συμβουλή.</small>
       </div>
     </section>
 
@@ -298,6 +354,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=procalc"></script>
 </body>
 </html>
