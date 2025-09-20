@@ -21,14 +21,14 @@ window.addEventListener('scroll', ()=>{
   lastY = y;
 });
 
-// Theme selector — default 'dark'; keep one dark + light variants
+// Theme selector — default 'greige'
 const themeSelect = document.getElementById('themeSelect');
 const htmlEl = document.documentElement;
 function applyTheme(theme){
   htmlEl.setAttribute('data-theme', theme);
   try{ localStorage.setItem('dpas_theme', theme); }catch{}
 }
-let initial = 'dark';
+let initial = 'greige';
 try{
   const saved = localStorage.getItem('dpas_theme');
   if (saved) initial = saved;
@@ -143,7 +143,7 @@ function calculate(){
   renderRows(tblBusiness,detB.rows);
   renderRows(tblRent,detR.rows);
 
-  try{ localStorage.setItem('dpas_calc_v34', JSON.stringify({year,advRate,duty,salary,business,rental,children,prepaid,credits})); }catch{}
+  try{ localStorage.setItem('dpas_calc_v35', JSON.stringify({year,advRate,duty,salary,business,rental,children,prepaid,credits})); }catch{}
 }
 document.getElementById('calcBtn')?.addEventListener('click',calculate);
 document.getElementById('clearBtn')?.addEventListener('click',()=>{
