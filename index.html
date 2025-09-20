@@ -1,1 +1,171 @@
-<!doctype html><html lang='el'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Finora Accounting — Λογιστικό Γραφείο</title><link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap' rel='stylesheet'><link rel='stylesheet' href='styles.css'><link rel='icon' href='assets/favicon.svg' type='image/svg+xml'></head><body><header class='site-header'><div class='container nav-wrap'><a class='brand' href='#home'><img id='logo' src='assets/logo-wordmark-light.svg' class='logo' alt='Finora Accounting'></a><nav id='nav' class='nav'><a href='#services'>Υπηρεσίες</a><a href='#calculator'>Υπολογιστής Φόρου</a><a href='#contact' class='btn small'>Επικοινωνία</a><label class='theme-switch'><span>Θέμα</span><select id='themeSelect'><option value='light'>Φωτεινό</option><option value='greige'>Γκρι‑μπεζ</option><option value='dark'>Ημι‑σκούρο</option></select></label></nav><button id='menuBtn' class='menu-btn'>☰</button></div></header><main id='home'><section class='hero container'><div class='hero-content'><h1>Σοβαρή λογιστική υποστήριξη</h1><p class='sub'>Μεθοδική και ήρεμη συνεργασία για επιχειρήσεις και επαγγελματίες.</p><div class='cta'><a href='#contact' class='btn'>Ζήτησε προσφορά</a><a href='#services' class='btn ghost'>Δες υπηρεσίες</a></div></div><div class='hero-visual'><img src='assets/hero-composed.svg' alt=''></div></section><section id='services' class='section alt'><div class='container'><h2>Υπηρεσίες</h2><div class='grid-3'><article class='card icon'><img src='assets/ic-books.svg'><h3>Τήρηση βιβλίων</h3></article><article class='card icon'><img src='assets/ic-tax.svg'><h3>Φορολογικές δηλώσεις</h3></article><article class='card icon'><img src='assets/ic-payroll.svg'><h3>Μισθοδοσία</h3></article></div></div></section><section id='calculator' class='section'><div class='container'><h2>Υπολογιστής Φόρου</h2><div class='card calc-pro'><div class='calc-controls'><div class='row'><label>Έτος<select id='taxYear'><option value='2025'>2025</option><option value='2024'>2024</option></select></label><label>Προκαταβολή<select id='advanceRate'><option value='0'>0%</option><option value='0.55'>55%</option><option value='1.00'>100%</option></select></label><label>Τέλος επιτηδεύματος<input type='number' id='businessDuty' min='0' step='10' placeholder='650'></label></div><div class='row'><label>Μισθωτές<input type='number' id='incSalary' min='0' step='100'></label><label>Επιχειρ.<input type='number' id='incBusiness' min='0' step='100'></label><label>Ακίνητα<input type='number' id='incRental' min='0' step='100'></label></div><div class='row'><label>Τέκνα<input type='number' id='children' min='0' step='1'></label><label>Προπληρωμές<input type='number' id='prepaid' min='0' step='50'></label><label>Πιστώσεις<input type='number' id='credits' min='0' step='50'></label></div><div class='row actions'><button class='btn' id='calcBtn'>Υπολογισμός</button><button class='btn ghost' id='clearBtn'>Καθαρισμός</button><button class='btn ghost' id='printBtn'>Εκτύπωση / PDF</button><button class='btn ghost' id='csvBtn'>Λήψη CSV</button></div></div><div class='calc-results'><div class='summary card'><div class='result-head'>Σύνοψη</div><div class='row'><span>Μισθωτά:</span><strong id='taxSalary'>—</strong></div><div class='row'><span>Επιχειρ.:</span><strong id='taxBusiness'>—</strong></div><div class='row'><span>Προκαταβολή:</span><strong id='taxAdvance'>—</strong></div><div class='row'><span>Ακίνητα:</span><strong id='taxRental'>—</strong></div><div class='row'><span>Τέλος επιτηδ.:</span><strong id='taxDuty'>—</strong></div><div class='row'><span>Προπληρωμές:</span><strong id='taxPrepaid'>—</strong></div><div class='row'><span>Πιστώσεις:</span><strong id='taxCredits'>—</strong></div><div class='sep'></div><div class='row total'><span>Τελικό:</span><strong id='taxTotal'>—</strong></div></div><div class='breakdowns'><div class='card'><h4>Μισθωτά</h4><table class='tbl' id='tblSalary'><thead><tr><th>Κλιμάκιο</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody></tbody></table></div><div class='card'><h4>Επιχειρ.</h4><table class='tbl' id='tblBusiness'><thead><tr><th>Κλιμάκιο</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody></tbody></table></div><div class='card'><h4>Ακίνητα</h4><table class='tbl' id='tblRental'><thead><tr><th>Κλιμάκιο</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody></tbody></table></div></div></div></div></section><section id='contact' class='section contact-section alt'><div class='container grid-2'><div><h2>Επικοινωνία</h2><form action='mailto:dpeconsolutions@gmail.com' method='post' enctype='text/plain' class='form'><label>Ονοματεπώνυμο<input type='text' name='name' required></label><label>Email<input type='email' name='email' required></label><label>Μήνυμα<textarea name='message' rows='5' required></textarea></label><button type='submit' class='btn'>Αποστολή</button></form></div><div class='contact-card card'><h3>Στοιχεία</h3><ul class='contact-list'><li>📧 dpeconsolutions@gmail.com</li><li>📞 2431076222</li></ul></div></div></section></main><footer class='site-footer'><div class='container copyright'><p>© <span id='year'></span> Finora Accounting</p></div></footer><script src='script.js'></script></body></html>
+<!doctype html>
+<html lang="el" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>D.P. Accounting Solutions — Λογιστική Υποστήριξη</title>
+  <meta name="description" content="D.P. Accounting Solutions — λογιστικές υπηρεσίες, μισθοδοσία, έναρξη/στήριξη επιχειρήσεων, συμβουλευτική." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=dark" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <div class="announce">
+    <div class="container ann-wrap">
+      <span>Δωρεάν αρχική εκτίμηση & προτάσεις συνεργασίας</span>
+      <a href="#contact" class="ann-link">Επικοινωνήστε μαζί μας</a>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="#home" aria-label="D.P. Accounting Solutions">
+        <img id="logo" src="assets/logo-wordmark-dark.svg" alt="D.P. Accounting Solutions" class="logo" />
+      </a>
+      <nav id="nav" class="nav">
+        <a href="#services">Υπηρεσίες</a>
+        <a href="#about">Σχετικά</a>
+        <a href="#industries">Κλάδοι</a>
+        <a href="#pricing">Πακέτα</a>
+        <a href="#calculator">Υπολογιστής Φόρου</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact" class="btn small">Επικοινωνία</a>
+        <label class="theme-switch">
+          <span>Θέμα</span>
+          <select id="themeSelect" aria-label="Εναλλαγή θέματος">
+            <option value="dark">Ημι‑σκούρο</option>
+            <option value="light">Φωτεινό</option>
+            <option value="greige">Γκρι‑μπεζ</option>
+          </select>
+        </label>
+      </nav>
+      <button id="menuBtn" class="menu-btn" aria-label="Άνοιγμα μενού">☰</button>
+    </div>
+    <div class="quickbar">
+      <div class="container quick-wrap">
+        <span>📧 <a href="mailto:dpeconsolutions@gmail.com">dpeconsolutions@gmail.com</a></span>
+        <span>📞 <a href="tel:+302431076222">2431076222</a></span>
+        <span>📍 Υποστήριξη σε όλη την Ελλάδα</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="hero container">
+      <div class="hero-content">
+        <h1>Σοβαρή λογιστική υποστήριξη<br>σε εκλεπτυσμένο σκοτεινό περιβάλλον.</h1>
+        <p class="sub">Ήρεμη, μεθοδική συνεργασία με έμφαση στην καθαρή επικοινωνία και τις προθεσμίες.</p>
+        <div class="cta">
+          <a href="#contact" class="btn">Ζήτησε προσφορά</a>
+          <a href="#services" class="btn ghost">Δες υπηρεσίες</a>
+        </div>
+        <ul class="pill-strip">
+          <li>Ακρίβεια στις υποβολές</li>
+          <li>Διαφάνεια στις χρεώσεις</li>
+          <li>Επικοινωνία εντός προθεσμιών</li>
+        </ul>
+      </div>
+      <div class="hero-visual">
+        <img src="assets/hero-composed.svg" alt="Σύνθεση χρυσού σε σκοτεινό φόντο" />
+      </div>
+    </section>
+
+    <section id="services" class="section alt">
+      <div class="container">
+        <h2>Υπηρεσίες</h2>
+        <div class="cards grid-3">
+          <article class="card icon"><img src="assets/ic-books.svg" alt="" /><h3>Τήρηση βιβλίων</h3><p>Οργάνωση παραστατικών & υποβολές με συνέπεια.</p></article>
+          <article class="card icon"><img src="assets/ic-tax.svg" alt="" /><h3>Φορολογικές δηλώσεις</h3><p>Φυσικά & νομικά πρόσωπα — συμμόρφωση χωρίς άγχος.</p></article>
+          <article class="card icon"><img src="assets/ic-payroll.svg" alt="" /><h3>Μισθοδοσία</h3><p>Διαχείριση μισθοδοσίας & εργατικών δηλώσεων.</p></article>
+          <article class="card icon"><img src="assets/ic-rocket.svg" alt="" /><h3>Έναρξη & μεταβολές</h3><p>Επιλογή μορφής, ΚΑΔ, ηλεκτρονική τιμολόγηση.</p></article>
+          <article class="card icon"><img src="assets/ic-advisory.svg" alt="" /><h3>Συμβουλευτική</h3><p>Πρακτικές προτάσεις οργάνωσης ροών & κόστους.</p></article>
+          <article class="card icon"><img src="assets/ic-mining.svg" alt="" /><h3>Εξειδίκευση σε λατομεία</h3><p>Κοστολόγηση έργων & μητρώα παγίων.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="calculator" class="section">
+      <div class="container">
+        <h2>Υπολογιστής Φόρου</h2>
+        <p class="lead">Μισθωτά, επιχειρ. δραστηριότητα, ακίνητα — μείωση τέκνων, προκαταβολή, προπληρωμές, πιστώσεις.</p>
+        <!-- Calculator markup identical to previous build (omitted for brevity) -->
+        <div class="card calc-pro">
+          <div class="calc-controls">
+            <div class="row">
+              <label>Έτος<select id="taxYear"><option value="2025">2025</option><option value="2024">2024</option></select></label>
+              <label>Προκαταβολή<select id="advanceRate"><option value="0">0%</option><option value="0.55">55%</option><option value="1.00">100%</option></select></label>
+              <label>Τέλος επιτηδεύματος<input type="number" id="businessDuty" min="0" step="10" placeholder="π.χ. 650" /></label>
+            </div>
+            <div class="row">
+              <label>Μισθωτές/Συντάξεις<input type="number" id="incSalary" min="0" step="100" /></label>
+              <label>Επιχειρ. δραστηριότητα<input type="number" id="incBusiness" min="0" step="100" /></label>
+              <label>Ακίνητα<input type="number" id="incRental" min="0" step="100" /></label>
+            </div>
+            <div class="row">
+              <label>Εξαρτώμενα τέκνα<input type="number" id="children" min="0" step="1" /></label>
+              <label>Προπληρωμές<input type="number" id="prepaid" min="0" step="50" /></label>
+              <label>Πιστώσεις<input type="number" id="credits" min="0" step="50" /></label>
+            </div>
+            <div class="row actions">
+              <button class="btn" id="calcBtn">Υπολογισμός</button>
+              <button class="btn ghost" id="clearBtn">Καθαρισμός</button>
+              <button class="btn ghost" id="printBtn">Εκτύπωση / PDF</button>
+              <button class="btn ghost" id="csvBtn">Λήψη CSV</button>
+            </div>
+          </div>
+          <div class="calc-results">
+            <div class="summary card">
+              <div class="result-head">Σύνοψη</div>
+              <div class="row"><span>Φόρος Μισθωτών/Συντάξεων:</span><strong id="taxSalary">—</strong></div>
+              <div class="row"><span>Φόρος Επιχειρ. δραστηρ.:</span><strong id="taxBusiness">—</strong></div>
+              <div class="row"><span>Προκαταβολή:</span><strong id="taxAdvance">—</strong></div>
+              <div class="row"><span>Φόρος Ακινήτων:</span><strong id="taxRental">—</strong></div>
+              <div class="row"><span>Τέλος επιτηδ.:</span><strong id="taxDuty">—</strong></div>
+              <div class="row"><span>Προπληρωμές:</span><strong id="taxPrepaid">—</strong></div>
+              <div class="row"><span>Πιστώσεις:</span><strong id="taxCredits">—</strong></div>
+              <div class="sep"></div>
+              <div class="row total"><span>Τελικό:</span><strong id="taxTotal">—</strong></div>
+            </div>
+            <div class="breakdowns">
+              <div class="card"><h4>Μισθωτά/Συντάξεις</h4><table class="tbl" id="tblSalary"><thead><tr><th>Κλιμάκιο</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody></tbody></table></div>
+              <div class="card"><h4>Επιχειρ. δραστηριότητα</h4><table class="tbl" id="tblBusiness"><thead><tr><th>Κλιμάκιο</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody></tbody></table></div>
+              <div class="card"><h4>Ακίνητα</h4><table class="tbl" id="tblRental"><thead><tr><th>Κλιμάκιο</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody></tbody></table></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact-section alt">
+      <div class="container grid-2">
+        <div>
+          <h2>Επικοινωνία</h2>
+          <form id="contactForm" class="form" action="mailto:dpeconsolutions@gmail.com" method="post" enctype="text/plain">
+            <label>Ονοματεπώνυμο<input type="text" name="name" required /></label>
+            <label>Email<input type="email" name="email" required /></label>
+            <label>Μήνυμα<textarea name="message" rows="5" required></textarea></label>
+            <button type="submit" class="btn">Αποστολή</button>
+          </form>
+        </div>
+        <div class="contact-card card">
+          <h3>Στοιχεία</h3>
+          <ul class="contact-list">
+            <li>📧 <a href="mailto:dpeconsolutions@gmail.com">dpeconsolutions@gmail.com</a></li>
+            <li>📞 <a href="tel:+302431076222">2431076222</a></li>
+            <li>📍 Ελλάδα — Υποστήριξη πανελλαδικά</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container copyright">
+      <p>© <span id="year"></span> D.P. Accounting Solutions • Λογιστικές Υπηρεσίες</p>
+    </div>
+  </footer>
+
+  <script src="script.js?v=dark"></script>
+</body>
+</html>
