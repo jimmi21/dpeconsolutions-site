@@ -4,13 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>D.P. Accounting Solutions — Λογιστική Υποστήριξη</title>
-  <meta name="description" content="D.P. Accounting Solutions — λογιστικές υπηρεσίες, μισθοδοσία, έναρξη/στήριξη επιχειρήσεων, συμβουλευτική. Ήρεμη και μεθοδική συνεργασία." />
+  <meta name="description" content="D.P. Accounting Solutions — λογιστικές υπηρεσίες, μισθοδοσία, έναρξη/στήριξη επιχειρήσεων, συμβουλευτική." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=v2" />
+  <link rel="stylesheet" href="styles.css?v=v3" />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="canonical" href="https://jimmi21.github.io/dpeconsolutions-site/">
 </head>
 <body>
   <a class="skip" href="#main">Παράκαμψη στο περιεχόμενο</a>
@@ -19,7 +18,6 @@
     <div class="container nav-wrap">
       <a class="brand" href="#home" aria-label="D.P. Accounting Solutions">
         <img id="logo" src="assets/logo-dp-gold.png" alt="Λογότυπο D.P. Accounting Solutions" class="logo square" />
-        <span class="brand-text">D.P. Accounting Solutions</span>
       </a>
       <nav id="nav" class="nav" aria-label="Κύρια πλοήγηση">
         <a href="#services">Υπηρεσίες</a>
@@ -28,6 +26,7 @@
         <label class="theme-switch" title="Θέμα">
           <select id="themeSelect" aria-label="Εναλλαγή θέματος">
             <option value="dark">Σκοτεινό</option>
+            <option value="mono">Μαύρο‑Λευκό‑Χρυσό</option>
             <option value="grey">Γκρι</option>
             <option value="greige">Γκρι‑μπεζ</option>
             <option value="light">Φωτεινό</option>
@@ -38,25 +37,36 @@
     </div>
     <div class="quickbar" role="contentinfo">
       <div class="container quick-wrap">
-        <span>📧 <a href="mailto:dpeconsolutions@gmail.com">dpeconsolutions@gmail.com</a></span>
-        <span>📞 <a href="tel:+302431076222">2431076222</a></span>
-        <span>📍 Υποστήριξη σε όλη την Ελλάδα</span>
+        <span><a href="mailto:dpeconsolutions@gmail.com">dpeconsolutions@gmail.com</a></span>
+        <span><a href="tel:+302431076222">2431076222</a></span>
+        <span>Υποστήριξη σε όλη την Ελλάδα</span>
       </div>
     </div>
   </header>
 
   <main id="main">
     <section id="home" class="hero container">
-      <div class="hero-content">
-        <h1>Σοβαρή λογιστική υποστήριξη<br>με καθαρή επικοινωνία και συνέπεια.</h1>
-        <p class="sub">Ήρεμη, μεθοδική συνεργασία σε διακριτική αισθητική χωρίς έντονα χρώματα.</p>
+      <div class="hero-content only">
+        <h1>Λογιστική υποστήριξη με σοβαρότητα, διαφάνεια και συνέπεια.</h1>
+        <p class="sub">Καθαρή επικοινωνία, τήρηση προθεσμιών, ήρεμη συνεργασία. Χωρίς περιττά στοιχεία.</p>
         <div class="cta">
           <a href="#contact" class="btn">Ζήτησε προσφορά</a>
-          <a href="#calculator" class="btn ghost">Δες τον υπολογιστή φόρου</a>
+          <a href="#calculator" class="btn ghost">Υπολογιστής φόρου</a>
         </div>
       </div>
-      <div class="hero-visual">
-        <img src="assets/hero-composed.svg" alt="Σύνθεση σε σκοτεινό φόντο" />
+    </section>
+
+    <section id="services" class="section alt">
+      <div class="container">
+        <h2>Υπηρεσίες</h2>
+        <div class="cards grid-3 no-icons">
+          <article class="card"><h3>Τήρηση βιβλίων</h3><p>Οργάνωση παραστατικών, συμφωνίες, υποβολές.</p></article>
+          <article class="card"><h3>Φορολογικές δηλώσεις</h3><p>Φυσικά και νομικά πρόσωπα, πλήρης συμμόρφωση.</p></article>
+          <article class="card"><h3>Μισθοδοσία</h3><p>Διαχείριση μισθοδοσίας και εργατικών δηλώσεων.</p></article>
+          <article class="card"><h3>Έναρξη & μεταβολές</h3><p>Μορφή εταιρείας, ΚΑΔ, ηλεκτρονική τιμολόγηση.</p></article>
+          <article class="card"><h3>Συμβουλευτική</h3><p>Ροές, κόστος, πρακτικές βελτιστοποίησης.</p></article>
+          <article class="card"><h3>Εξειδίκευση σε λατομεία</h3><p>Κοστολόγηση έργων, μητρώα παγίων.</p></article>
+        </div>
       </div>
     </section>
 
@@ -163,9 +173,9 @@
         <div class="contact-card card">
           <h3>Στοιχεία</h3>
           <ul class="contact-list">
-            <li>📧 <a href="mailto:dpeconsolutions@gmail.com">dpeconsolutions@gmail.com</a></li>
-            <li>📞 <a href="tel:+302431076222">2431076222</a></li>
-            <li>📍 Ελλάδα — Υποστήριξη πανελλαδικά</li>
+            <li><a href="mailto:dpeconsolutions@gmail.com">dpeconsolutions@gmail.com</a></li>
+            <li><a href="tel:+302431076222">2431076222</a></li>
+            <li>Ελλάδα — Υποστήριξη πανελλαδικά</li>
           </ul>
         </div>
       </div>
@@ -183,6 +193,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=v2"></script>
+  <script src="script.js?v=v3"></script>
 </body>
 </html>
