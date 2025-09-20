@@ -4,14 +4,36 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>D.P. Accounting Solutions — Λογιστική Υποστήριξη</title>
-  <meta name="description" content="D.P. Accounting Solutions — λογιστικές υπηρεσίες, μισθοδοσία, έναρξη/στήριξη επιχειρήσεων, συμβουλευτική." />
+  <meta name="description" content="D.P. Accounting Solutions — λογιστικές υπηρεσίες, μισθοδοσία, έναρξη/στήριξη επιχειρήσεων, συμβουλευτική. Ήρεμη και μεθοδική συνεργασία." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=dark" />
+  <link rel="stylesheet" href="styles.css?v=dark-logo" />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://jimmi21.github.io/dpeconsolutions-site/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="D.P. Accounting Solutions — Λογιστική Υποστήριξη">
+  <meta property="og:description" content="Λογιστικές υπηρεσίες με συνέπεια, διαφάνεια και καθαρή επικοινωνία.">
+  <meta property="og:image" content="https://jimmi21.github.io/dpeconsolutions-site/assets/logo-dp-gold.png">
+  <meta property="og:url" content="https://jimmi21.github.io/dpeconsolutions-site/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AccountingService",
+    "name": "D.P. Accounting Solutions",
+    "image": "https://jimmi21.github.io/dpeconsolutions-site/assets/logo-dp-gold.png",
+    "email": "dpeconsolutions@gmail.com",
+    "telephone": "+302431076222",
+    "areaServed": "GR",
+    "address": {"@type":"PostalAddress","addressCountry":"GR"},
+    "url": "https://jimmi21.github.io/dpeconsolutions-site/"
+  }
+  </script>
 </head>
 <body>
-  <div class="announce">
+  <a class="skip" href="#main">Παράκαμψη στο περιεχόμενο</a>
+
+  <div class="announce" role="region" aria-label="Πληροφορία">
     <div class="container ann-wrap">
       <span>Δωρεάν αρχική εκτίμηση & προτάσεις συνεργασίας</span>
       <a href="#contact" class="ann-link">Επικοινωνήστε μαζί μας</a>
@@ -21,9 +43,9 @@
   <header class="site-header">
     <div class="container nav-wrap">
       <a class="brand" href="#home" aria-label="D.P. Accounting Solutions">
-        <img id="logo" src="assets/logo-wordmark-dark.svg" alt="D.P. Accounting Solutions" class="logo" />
+        <img id="logo" src="assets/logo-dp-gold.png" alt="Λογότυπο D.P. Accounting Solutions" class="logo square" />
       </a>
-      <nav id="nav" class="nav">
+      <nav id="nav" class="nav" aria-label="Κύρια πλοήγηση">
         <a href="#services">Υπηρεσίες</a>
         <a href="#about">Σχετικά</a>
         <a href="#industries">Κλάδοι</a>
@@ -42,7 +64,7 @@
       </nav>
       <button id="menuBtn" class="menu-btn" aria-label="Άνοιγμα μενού">☰</button>
     </div>
-    <div class="quickbar">
+    <div class="quickbar" role="contentinfo">
       <div class="container quick-wrap">
         <span>📧 <a href="mailto:dpeconsolutions@gmail.com">dpeconsolutions@gmail.com</a></span>
         <span>📞 <a href="tel:+302431076222">2431076222</a></span>
@@ -51,8 +73,8 @@
     </div>
   </header>
 
-  <main id="home">
-    <section class="hero container">
+  <main id="main">
+    <section id="home" class="hero container">
       <div class="hero-content">
         <h1>Σοβαρή λογιστική υποστήριξη<br>σε εκλεπτυσμένο σκοτεινό περιβάλλον.</h1>
         <p class="sub">Ήρεμη, μεθοδική συνεργασία με έμφαση στην καθαρή επικοινωνία και τις προθεσμίες.</p>
@@ -85,11 +107,11 @@
       </div>
     </section>
 
+    <!-- Calculator, about, pricing, faq, contact (όπως στο προηγούμενο build) -->
     <section id="calculator" class="section">
       <div class="container">
         <h2>Υπολογιστής Φόρου</h2>
         <p class="lead">Μισθωτά, επιχειρ. δραστηριότητα, ακίνητα — μείωση τέκνων, προκαταβολή, προπληρωμές, πιστώσεις.</p>
-        <!-- Calculator markup identical to previous build (omitted for brevity) -->
         <div class="card calc-pro">
           <div class="calc-controls">
             <div class="row">
@@ -160,12 +182,18 @@
     </section>
   </main>
 
+  <!-- Floating CTA -->
+  <div class="float-cta" role="navigation" aria-label="Γρήγορες ενέργειες">
+    <a class="btn small" href="tel:+302431076222">Κλήση</a>
+    <a class="btn small ghost" href="mailto:dpeconsolutions@gmail.com">Email</a>
+  </div>
+
   <footer class="site-footer">
     <div class="container copyright">
       <p>© <span id="year"></span> D.P. Accounting Solutions • Λογιστικές Υπηρεσίες</p>
     </div>
   </footer>
 
-  <script src="script.js?v=dark"></script>
+  <script src="script.js?v=dark-logo"></script>
 </body>
 </html>

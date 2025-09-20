@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://jimmi21.github.io/dpeconsolutions-site/sitemap.xml
