@@ -1,0 +1,194 @@
+// Minimal JS — menu, anchors, header shrink, calculator & print
+
+const menuBtn = document.getElementById('menuBtn');
+const nav = document.getElementById('nav');
+if (menuBtn) menuBtn.addEventListener('click', ()=>nav.classList.toggle('show'));
+document.getElementById('year').textContent = new Date().getFullYear();
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); nav?.classList.remove('show'); }
+  });
+});
+
+// Header shrink
+const header = document.getElementById('siteHeader');
+let lastY = 0;
+window.addEventListener('scroll', ()=>{
+  const y = window.scrollY || document.documentElement.scrollTop;
+  if (y > 80 && lastY <= 80) header.classList.add('shrink');
+  else if (y <= 80 && lastY > 80) header.classList.remove('shrink');
+  lastY = y;
+});
+
+// Calculator data & helpers
+const TAX_TABLES = {
+  "2025": { EMP:[{upTo:10000,rate:.09},{upTo:20000,rate:.22},{upTo:30000,rate:.28},{upTo:40000,rate:.36},{upTo:Infinity,rate:.44}],
+            RENT:[{upTo:12000,rate:.15},{upTo:35000,rate:.35},{upTo:Infinity,rate:.45}] },
+  "2024": { EMP:[{upTo:10000,rate:.09},{upTo:20000,rate:.22},{upTo:30000,rate:.28},{upTo:40000,rate:.36},{upTo:Infinity,rate:.44}],
+            RENT:[{upTo:12000,rate:.15},{upTo:35000,rate:.35},{upTo:Infinity,rate:.45}] }
+};
+function childrenCredit(c){ if(c<=0)return 777; if(c===1)return 900; if(c===2)return 1120; if(c===3)return 1340; if(c===4)return 1580; if(c===5)return 1780; return 1780+(c-5)*220; }
+function phasedCredit(credit,salary,children){ if(children>=5) return credit; const excess=Math.max(0,(salary||0)-12000); const steps=Math.floor(excess/1000); return Math.max(0, credit - steps*20); }
+function calcProgressiveDetailed(amount, brackets){
+  let remaining=Math.max(0,amount||0), prev=0, rows=[], total=0;
+  for(const b of brackets){
+    const upToLabel = (b.upTo===Infinity) ? 'και άνω' : b.upTo.toLocaleString('el-GR');
+    const lower = (prev+1).toLocaleString('el-GR');
+    const span = b.upTo===Infinity ? Infinity : b.upTo-prev;
+    const part = Math.min(remaining,span);
+    if(part>0){
+      const tax = Math.round(part*b.rate);
+      rows.push({range: (b.upTo===Infinity? `${lower} € και άνω` : `${lower}–${upToLabel} €`), amount:part, rate:b.rate, tax});
+      total += tax; remaining -= part;
+    }
+    if(b.upTo!==Infinity) prev=b.upTo;
+    if(remaining<=0) break;
+  }
+  return {rows, total};
+}
+function fmt(n){ return new Intl.NumberFormat('el-GR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n||0); }
+function tableToCSV(tbody){
+  const head=['Κλίμακες Φορολογίας','Ποσό','Συντελεστής','Φόρος'];
+  const rows=[...tbody.querySelectorAll('tr')].map(tr=>[...tr.querySelectorAll('td')].map(td=>td.textContent));
+  return [head, ...rows].map(r=>r.join(';')).join('\\n');
+}
+
+const elYear=document.getElementById('taxYear');
+const elAdv=document.getElementById('advanceRate');
+const elDuty=document.getElementById('businessDuty');
+const elSalary=document.getElementById('incSalary');
+const elBus=document.getElementById('incBusiness');
+const elRent=document.getElementById('incRental');
+const elChildren=document.getElementById('children');
+const elPrepaid=document.getElementById('prepaid');
+const elCredits=document.getElementById('credits');
+
+const outSalary=document.getElementById('taxSalary');
+const outBusiness=document.getElementById('taxBusiness');
+const outAdvance=document.getElementById('taxAdvance');
+const outRent=document.getElementById('taxRental');
+const outDuty=document.getElementById('taxDuty');
+const outPrepaid=document.getElementById('taxPrepaid');
+const outCredits=document.getElementById('taxCredits');
+const outTotal=document.getElementById('taxTotal');
+
+const tblSalary=document.querySelector('#tblSalary tbody');
+const tblBusiness=document.querySelector('#tblBusiness tbody');
+const tblRent=document.querySelector('#tblRental tbody');
+
+function renderRows(tbody,rows){
+  tbody.innerHTML='';
+  rows.forEach(r=>{
+    const tr=document.createElement('tr');
+    const td1=document.createElement('td'); td1.textContent=r.range;
+    const td2=document.createElement('td'); td2.textContent=fmt(r.amount);
+    const td3=document.createElement('td'); td3.textContent=(r.rate*100).toFixed(0)+'%';
+    const td4=document.createElement('td'); td4.textContent=fmt(Math.round(r.tax));
+    tr.append(td1,td2,td3,td4); tbody.appendChild(tr);
+  });
+  if(!rows.length){ const tr=document.createElement('tr'); const td=document.createElement('td'); td.colSpan=4; td.style.textAlign='center'; td.textContent='—'; tr.appendChild(td); tbody.appendChild(tr); }
+}
+
+function calculate(){
+  const year=elYear.value, t=TAX_TABLES[year];
+  const advRate=parseFloat(elAdv.value)||0;
+  const duty=Math.max(0,parseFloat(elDuty.value)||0);
+  const salary=Math.max(0,parseFloat(elSalary.value)||0);
+  const business=Math.max(0,parseFloat(elBus.value)||0);
+  const rental=Math.max(0,parseFloat(elRent.value)||0);
+  const children=Math.max(0,Math.floor(parseFloat(elChildren.value)||0));
+  const prepaid=Math.max(0,parseFloat(elPrepaid.value)||0);
+  const credits=Math.max(0,parseFloat(elCredits.value)||0);
+
+  const detS=calcProgressiveDetailed(salary,t.EMP);
+  const detB=calcProgressiveDetailed(business,t.EMP);
+  const detR=calcProgressiveDetailed(rental,t.RENT);
+
+  const baseCred=childrenCredit(children);
+  const phased=phasedCredit(baseCred,salary,children);
+  const appliedCredit=Math.min(detS.total,Math.round(phased));
+  const taxS_after=Math.max(0,detS.total-appliedCredit);
+
+  const advance=Math.round(detB.total*advRate);
+  const grossTotal=taxS_after+detB.total+detR.total+advance+duty;
+  const final=grossTotal-prepaid-credits;
+
+  outSalary.textContent=fmt(taxS_after);
+  outBusiness.textContent=fmt(detB.total);
+  outAdvance.textContent=fmt(advance);
+  outRent.textContent=fmt(detR.total);
+  outDuty.textContent=fmt(duty);
+  outPrepaid.textContent='-'+fmt(prepaid);
+  outCredits.textContent='-'+fmt(credits);
+  outTotal.textContent=(final>=0)?fmt(final):(fmt(Math.abs(final))+' επιστρεπτέο');
+
+  renderRows(tblSalary,detS.rows);
+  renderRows(tblBusiness,detB.rows);
+  renderRows(tblRent,detR.rows);
+
+  try{ localStorage.setItem('dpas_calc_v36', JSON.stringify({year,advRate,duty,salary,business,rental,children,prepaid,credits})); }catch{}
+}
+document.getElementById('calcBtn')?.addEventListener('click',calculate);
+document.getElementById('clearBtn')?.addEventListener('click',()=>{
+  [elSalary,elBus,elRent,elDuty,elChildren,elPrepaid,elCredits].forEach(el=>el.value='');
+  elAdv.value='0'; elYear.value='2025'; calculate();
+});
+
+// CSV
+document.getElementById('csvBtn')?.addEventListener('click',()=>{
+  const year=elYear.value; let csv=`Έτος;${year}\n`;
+  csv+=`\nΜισθωτά/Συντάξεις\n`+tableToCSV(document.querySelector('#tblSalary tbody'));
+  csv+=`\n\nΕπιχειρ. δραστηριότητα\n`+tableToCSV(document.querySelector('#tblBusiness tbody'));
+  csv+=`\n\nΑκίνητα\n`+tableToCSV(document.querySelector('#tblRental tbody'));
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a');
+  a.href=url; a.download=`dpas_tax_${year}.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+
+// PRINT — new tab with only calculator
+document.getElementById('printBtn')?.addEventListener('click',()=>{
+  calculate();
+  function tbodyHTML(sel){ return document.querySelector(sel).innerHTML; }
+  const win = window.open('', '_blank');
+  const css = `
+    @page{size:auto;margin:12mm}
+    body{font-family:'Noto Sans',Arial; margin:24px; color:#111;}
+    h1,h2,h3{font-family:'Noto Serif', Georgia, 'Times New Roman', serif}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+    .brand img{height:96px;border-radius:12px}
+    .muted{color:#555}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .summary{border:1px solid #ddd;border-radius:10px;padding:12px}
+    table{width:100%;border-collapse:collapse;margin-top:6px}
+    th,td{border:1px solid #ddd;padding:6px 8px;text-align:right}
+    th:first-child,td:first-child{text-align:left}
+    th{font-weight:700}
+    .total{font-weight:700;font-size:1.1rem}
+  `;
+  const year = document.getElementById('taxYear').value;
+  const now = new Date().toLocaleString('el-GR');
+  const summaryHTML = document.querySelector('.summary').innerHTML;
+  const doc = `<!doctype html><html><head><meta charset="utf-8"><title>Εκτύπωση — Υπολογιστής Φόρου</title><style>${css}</style></head>
+  <body>
+    <div class="brand"><img src="${document.getElementById('logo').src}" alt="Logo"><div><h2>D.P. Accounting Solutions</h2><div class="muted">Υπολογιστής φόρου — Έτος ${year} • ${now}</div></div></div>
+    <div class="grid">
+      <div class="summary">${summaryHTML}</div>
+      <div>
+        <h3>Μισθωτά/Συντάξεις</h3>
+        <table><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody>${tbodyHTML('#tblSalary tbody')}</tbody></table>
+        <h3>Επιχειρ. δραστηριότητα</h3>
+        <table><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody>${tbodyHTML('#tblBusiness tbody')}</tbody></table>
+        <h3>Ακίνητα</h3>
+        <table><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody>${tbodyHTML('#tblRental tbody')}</tbody></table>
+      </div>
+    </div>
+    <script>window.onload=()=>{window.print();}</script>
+  </body></html>`;
+  win.document.open(); win.document.write(doc); win.document.close();
+});
+
+// Compute once
+(function(){ try{ const s=localStorage.getItem('dpas_calc_v36'); }catch{} })();
+calculate();

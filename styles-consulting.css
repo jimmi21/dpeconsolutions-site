@@ -1,0 +1,98 @@
+:root{
+  /* CONSULTING MINIMAL — off‑white, graphite, taupe */
+  --bg: #faf9f7;
+  --bg-soft: #fdfcfb;
+  --card: #ffffff;
+  --ink: #1a1c1d;      /* graphite */
+  --muted: #656a6e;    /* cool grey */
+  --muted-2: #7a7f84;
+  --line: #e7e3dc;     /* warm thin line */
+  --accent: #7c6f62;   /* taupe */
+  --accent-2: #a89783; /* soft beige */
+  --radius: 14px;
+  --shadow: 0 6px 18px rgba(0,0,0,.06);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:'Noto Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;line-height:1.66}
+h1,h2,h3,h4{font-family:'Noto Serif', Georgia, 'Times New Roman', serif;letter-spacing:.06px}
+h1{font-weight:700} h2{font-weight:700} h3{font-weight:600} h4{font-weight:600}
+.skip{position:absolute;left:-9999px;top:-9999px}.skip:focus{left:1rem;top:1rem;background:var(--card);padding:.5rem 1rem;border-radius:8px}
+.container{width:min(980px,90%);margin:0 auto}
+
+/* Header — minimal, lots of air; responsive logo */
+.site-header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.72);border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px);transition:padding .2s ease, background .2s ease}
+.nav-wrap{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 0;transition:padding .2s ease}
+.brand{display:flex;align-items:center;gap:.8rem;color:var(--ink);text-decoration:none}
+.logo.square{height:112px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.04);transition:height .25s ease}
+.site-header.shrink .nav-wrap{padding:.6rem 0}
+.site-header.shrink .logo.square{height:72px}
+.brand-text{opacity:.95;font-weight:700;letter-spacing:.2px}
+.nav a{color:var(--ink);text-decoration:none;margin-left:1.4rem;opacity:.9;font-weight:600}
+.nav a.link-minor{opacity:.6;font-weight:600}
+.nav a:hover{opacity:1}
+.menu-btn{display:none;background:none;border:0;font-size:1.6rem;color:var(--ink)}
+@media(max-width:980px){
+  .logo.square{height:84px}
+  .site-header.shrink .logo.square{height:60px}
+  .nav{position:absolute;right:5%;top:130px;background:var(--card);padding:1rem;border:1px solid var(--line);border-radius:12px;display:none;width:280px;box-shadow:var(--shadow)}
+  .nav a{display:block;margin:.7rem 0}
+  .menu-btn{display:block}
+  .nav.show{display:block}
+}
+
+/* Hero — extra whitespace */
+.hero{padding:3.2rem 0 1.6rem;border-bottom:1px solid var(--line)}
+.hero .only{max-width:720px}
+.hero h1{font-size:clamp(2.2rem,3.3vw,2.8rem);margin:0 0 .8rem}
+.sub{color:var(--muted-2);margin-bottom:1.2rem;max-width:60ch}
+.cta{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:.8rem}
+
+/* Sections / Cards */
+.section{padding:2.2rem 0}
+.section.alt{background:var(--bg-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;align-items:stretch}
+@media(max-width:980px){.grid-3{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:1.2rem;box-shadow:var(--shadow)}
+.no-icons .card h3{margin:.1rem 0 .35rem}
+.lead{color:var(--muted-2)}
+
+/* Forms / Buttons — flat, neutral */
+.form input,.form textarea{width:100%;padding:.85rem;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:'Noto Sans',system-ui}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:.7rem 1rem;border-radius:999px;border:1px solid var(--ink);text-decoration:none;background:transparent;color:var(--ink);font-weight:800;letter-spacing:.15px;box-shadow:none}
+.btn:hover{background:var(--ink);color:#fff}
+.btn.small{padding:.5rem .8rem;font-weight:800}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+
+/* Calculator */
+.calc-pro{display:grid;gap:1rem}
+.calc-controls .row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;align-items:end}
+@media(max-width:980px){.calc-controls .row{grid-template-columns:1fr}}
+.calc-controls label{display:grid;gap:.35rem;font-size:.95rem}
+.calc-controls input,.calc-controls select{width:100%;padding:.85rem;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.actions{margin-top:.2rem}
+.note{font-size:.9rem;color:var(--muted);margin:.45rem 0 0}
+.summary .result-head{font-weight:700;margin-bottom:.6rem;color:var(--muted)}
+.summary .row{display:flex;align-items:center;justify-content:space-between;margin:.3rem 0}
+.summary .sep{border-top:1px dashed var(--line);margin:.6rem 0}
+.summary .total strong{font-size:1.2rem}
+.breakdowns{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+@media(max-width:980px){.breakdowns{grid-template-columns:1fr}}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th,.tbl td{border:1px solid var(--line);padding:.55rem .65rem;text-align:right}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl thead th{background:var(--bg-soft);color:var(--muted);font-weight:700;letter-spacing:.1px}
+
+/* Floating CTA */
+.float-cta{position:fixed;right:18px;bottom:18px;display:flex;gap:.5rem;z-index:50}
+
+/* Footer */
+.site-footer{border-top:1px solid var(--line);padding:2rem 0 1rem;background:var(--bg-soft);text-align:center;color:var(--muted)}
+
+/* Print fallback (only calculator) */
+@media print{
+  body *{visibility:hidden}
+  #calcCard, #calcCard *{visibility:visible}
+  #calcCard{position:absolute;left:0;top:0;width:100%}
+}
