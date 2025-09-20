@@ -6,11 +6,19 @@ if (menuBtn) {
 }
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// Optional: prevent default mailto submit on some browsers to show a small confirmation
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e)=>{
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); nav?.classList.remove('show'); }
+  });
+});
+
+// Simple submit UX for mailto
 const form = document.getElementById('contactForm');
 if (form) {
   form.addEventListener('submit', () => {
-    // Basic UX hint; mail client will open
     setTimeout(() => alert('Άνοιξε το πρόγραμμα email σας για αποστολή. Ευχαριστούμε!'), 200);
   });
 }
