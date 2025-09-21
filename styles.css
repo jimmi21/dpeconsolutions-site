@@ -115,3 +115,6 @@ a{color:inherit}
   #calcCard, #calcCard *{visibility:visible}
   #calcCard{position:absolute;left:0;top:0;width:100%}
 }
+
+/* SLA note */
+.sla-note{font-size:.9rem;color:var(--muted);margin-top:.2rem}
