@@ -1,7 +1,7 @@
 :root{
   --bg: #f3efe9; --bg-soft: #f6f2ed; --card: #ffffff;
   --ink: #1c1b1a; --muted: #5b554f; --muted-2: #7a726a;
-  --line: #e3d8cc; --accent: #8f7d5f; --accent-2: #c9ad76;
+  --line: #e3d8cc; --accent: #988766; --accent-2: #c9ad76;
   --radius: 14px; --shadow: 0 10px 26px rgba(100, 85, 60, 0.10);
 }
 [data-theme="dark"]{ --bg:#0b0b0c; --bg-soft:#101012; --card:#111214; --ink:#f3f3f4; --muted:#cfd1d6; --muted-2:#b9bcc2; --line:#202225; --accent:#bfa66a; --accent-2:#d1bb7a; --shadow:0 10px 24px rgba(0,0,0,.55) }
@@ -116,5 +116,6 @@ a{color:inherit}
   #calcCard{position:absolute;left:0;top:0;width:100%}
 }
 
-/* SLA note */
-.sla-note{font-size:.9rem;color:var(--muted);margin-top:.2rem}
+/* Onboarding + QA minor spacing */
+#onboarding .card h4{margin:.2rem 0 .4rem}
+#qa .card p{min-height:3.2em}
