@@ -23,10 +23,10 @@ a{color:inherit}
 [data-theme="dark"] .site-header{background:rgba(0,0,0,.6)}
 .nav-wrap{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;transition:padding .2s ease}
 .brand{display:flex;align-items:center;gap:.7rem;color:var(--ink);text-decoration:none}
-.logo.square{height:120px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.06);transition:height .25s ease}
+.logo.square{height:140px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.06);transition:height .25s ease}
 .site-header.shrink .nav-wrap{padding:.6rem 0}
-.site-header.shrink .logo.square{height:84px}
-@media(max-width:980px){ .logo.square{height:92px} .site-header.shrink .logo.square{height:70px} }
+.site-header.shrink .logo.square{height:96px}
+@media(max-width:980px){ .logo.square{height:108px} .site-header.shrink .logo.square{height:78px} }
 .brand-text{opacity:.92;font-weight:800;letter-spacing:.2px}
 .nav a{color:var(--ink);text-decoration:none;margin-left:1.2rem;opacity:.9;font-weight:700}
 .nav a[aria-current="page"]{text-decoration:underline}
@@ -45,7 +45,8 @@ a{color:inherit}
 .trust-item strong{display:block;margin-bottom:.15rem}
 @media(max-width:980px){.trust-wrap{grid-template-columns:1fr}}
 
-.hero{padding:2.4rem 0 1.2rem;border-bottom:1px solid var(--line)}
+.hero{padding:2.8rem 0 1.6rem;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-20% -10% auto -10%;height:60%;background:radial-gradient(1400px 520px at 10% 10%, rgba(200,180,130,.18), transparent 60%);pointer-events:none}
 .hero .only{max-width:780px}
 .sub{color:var(--muted-2);margin-bottom:1rem;max-width:64ch}
 .cta{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:.8rem}
@@ -95,6 +96,8 @@ a{color:inherit}
 
 /* Floating CTA */
 .float-cta{position:fixed;right:18px;bottom:18px;display:flex;gap:.5rem;z-index:50}
+.mobile-only{display:none}
+@media(max-width:780px){.mobile-only{display:flex}}
 
 /* Discreet record strip */
 .record-strip{border-top:1px solid var(--line);background:var(--bg-soft);color:var(--muted);padding:1rem 0}
