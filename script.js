@@ -1,5 +1,176 @@
-const menuBtn=document.getElementById('menuBtn');const nav=document.getElementById('nav');if(menuBtn)menuBtn.addEventListener('click',()=>nav.classList.toggle('show'));document.getElementById('year')&&(document.getElementById('year').textContent=(new Date).getFullYear());document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=a.getAttribute('href').slice(1),n=document.getElementById(t);n&&(e.preventDefault(),n.scrollIntoView({behavior:"smooth",block:"start"}),nav?.classList.remove("show"))})});const header=document.getElementById('siteHeader');if(header){let e=0;window.addEventListener('scroll',()=>{const t=window.scrollY||document.documentElement.scrollTop;t>80&&e<=80?header.classList.add('shrink'):t<=80&&e>80&&header.classList.remove('shrink'),e=t})}const themeSelect=document.getElementById('themeSelect'),htmlEl=document.documentElement;function applyTheme(e){e&&(htmlEl.setAttribute('data-theme',e),localStorage.setItem('dpas_theme',e))}if(themeSelect){let e='greige';const t=localStorage.getItem('dpas_theme');t&&(e=t),themeSelect.value=e,applyTheme(e),themeSelect.addEventListener('change',()=>applyTheme(themeSelect.value))}
-const TAX_TABLES={"2025":{EMP:[{upTo:1e4,rate:.09},{upTo:2e4,rate:.22},{upTo:3e4,rate:.28},{upTo:4e4,rate:.36},{upTo:1/0,rate:.44}],RENT:[{upTo:12e3,rate:.15},{upTo:35e3,rate:.35},{upTo:1/0,rate:.45}]},"2024":{EMP:[{upTo:1e4,rate:.09},{upTo:2e4,rate:.22},{upTo:3e4,rate:.28},{upTo:4e4,rate:.36},{upTo:1/0,rate:.44}],RENT:[{upTo:12e3,rate:.15},{upTo:35e3,rate:.35},{upTo:1/0,rate:.45}]}};function childrenCredit(e){return e<=0?777:1===e?900:2===e?1120:3===e?1340:4===e?1580:5===e?1780:1780+220*(e-5)}function phasedCredit(e,t,n){if(n>=5)return e;const a=Math.max(0,(t||0)-12e3),r=Math.floor(a/1e3);return Math.max(0,e-20*r)}function calcProgressiveDetailed(e,t){let n=Math.max(0,e||0),a=0,r=[],o=0;for(const e of t){const t=1/0===e.upTo?"και άνω":e.upTo.toLocaleString("el-GR"),s=(a+1).toLocaleString("el-GR"),l=1/0===e.upTo?1/0:e.upTo-a,i=Math.min(n,l);if(i>0){const t=Math.round(i*e.rate);r.push({range:1/0===e.upTo?`${s} € και άνω`:`${s}–${t} €`,amount:i,rate:e.rate,tax:t}),o+=t,n-=i}if(e.upTo!==1/0&&(a=e.upTo),n<=0)break}return{rows:r,total:o}}function fmt(e){return new Intl.NumberFormat("el-GR",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(e||0)}function tableToCSV(e){const t=["Κλίμακες Φορολογίας","Ποσό","Συντελεστής","Φόρος"],n=[...e.querySelectorAll("tr")].map(e=>[...e.querySelectorAll("td")].map(e=>e.textContent));return[t,...n].map(e=>e.join(";")).join("\n")}const elYear=document.getElementById("taxYear"),elAdv=document.getElementById("advanceRate"),elDuty=document.getElementById("businessDuty"),elSalary=document.getElementById("incSalary"),elBus=document.getElementById("incBusiness"),elRent=document.getElementById("incRental"),elChildren=document.getElementById("children"),elPrepaid=document.getElementById("prepaid"),elCredits=document.getElementById("credits"),outSalary=document.getElementById("taxSalary"),outBusiness=document.getElementById("taxBusiness"),outAdvance=document.getElementById("taxAdvance"),outRent=document.getElementById("taxRental"),outDuty=document.getElementById("taxDuty"),outPrepaid=document.getElementById("taxPrepaid"),outCredits=document.getElementById("taxCredits"),outTotal=document.getElementById("taxTotal"),tblSalary=document.querySelector("#tblSalary tbody"),tblBusiness=document.querySelector("#tblBusiness tbody"),tblRent=document.querySelector("#tblRental tbody");function renderRows(e,t){if(!e)return;e.innerHTML="",t.forEach(t=>{const n=document.createElement("tr"),a=document.createElement("td");a.textContent=t.range;const r=document.createElement("td");r.textContent=fmt(t.amount);const o=document.createElement("td");o.textContent=(100*t.rate).toFixed(0)+"%";const s=document.createElement("td");s.textContent=fmt(Math.round(t.tax)),n.append(a,r,o,s),e.appendChild(n)}),t.length||(()=>{const t=document.createElement("tr"),n=document.createElement("td");n.colSpan=4,n.style.textAlign="center",n.textContent="—",t.appendChild(n),e.appendChild(t)})()}function calculate(){if(!elYear)return;const e=elYear.value,t=TAX_TABLES[e],n=parseFloat(elAdv.value)||0,a=Math.max(0,parseFloat(elDuty.value)||0),r=Math.max(0,parseFloat(elSalary.value)||0),o=Math.max(0,parseFloat(elBus.value)||0),s=Math.max(0,parseFloat(elRent.value)||0),l=Math.max(0,Math.floor(parseFloat(elChildren.value)||0)),i=Math.max(0,parseFloat(elPrepaid.value)||0),c=Math.max(0,parseFloat(elCredits.value)||0),d=calcProgressiveDetailed(r,t.EMP),u=calcProgressiveDetailed(o,t.EMP),m=calcProgressiveDetailed(s,t.RENT),y=childrenCredit(l),p=phasedCredit(y,r,l),h=Math.min(d.total,Math.round(p)),g=Math.max(0,d.total-h),v=Math.round(u.total*n),f=g+u.total+m.total+v+a,b=f-i-c;outSalary.textContent=fmt(g),outBusiness.textContent=fmt(u.total),outAdvance.textContent=fmt(v),outRent.textContent=fmt(m.total),outDuty.textContent=fmt(a),outPrepaid.textContent="-"+fmt(i),outCredits.textContent="-"+fmt(c),outTotal.textContent=b>=0?fmt(b):fmt(Math.abs(b))+" επιστρεπτέο",renderRows(tblSalary,d.rows),renderRows(tblBusiness,u.rows),renderRows(tblRent,m.rows);try{localStorage.setItem("dpas_calc_v4",JSON.stringify({year:e,advRate:n,duty:a,salary:r,business:o,rental:s,children:l,prepaid:i,credits:c}))}catch{}}document.getElementById("calcBtn")?.addEventListener("click",calculate),document.getElementById("clearBtn")?.addEventListener("click",()=>{[elSalary,elBus,elRent,elDuty,elChildren,elPrepaid,elCredits].forEach(e=>e.value=""),elAdv.value="0",elYear.value="2025",calculate()}),document.getElementById("csvBtn")?.addEventListener("click",()=>{const e=elYear.value;let t=`Έτος;${e}\n`;t+=`\nΜισθωτά/Συντάξεις\n`+tableToCSV(document.querySelector("#tblSalary tbody")),t+=`\n\nΕπιχειρ. δραστηριότητα\n`+tableToCSV(document.querySelector("#tblBusiness tbody")),t+=`\n\nΑκίνητα\n`+tableToCSV(document.querySelector("#tblRental tbody"));const n=new Blob([t],{type:"text/csv;charset=utf-8;"}),a=URL.createObjectURL(n),r=document.createElement("a");r.href=a,r.download=`dpas_tax_${e}.csv`,document.body.appendChild(r),r.click(),r.remove(),URL.revokeObjectURL(a)}),document.getElementById("printBtn")?.addEventListener("click",()=>{function e(e){return document.querySelector(e).innerHTML}calculate();const t=window.open("","_blank"),n=`
+// Basic nav + smooth scroll + header shrink
+const menuBtn = document.getElementById('menuBtn');
+const nav = document.getElementById('nav');
+if (menuBtn) menuBtn.addEventListener('click', ()=>nav.classList.toggle('show'));
+document.getElementById('year') && (document.getElementById('year').textContent = new Date().getFullYear());
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); nav?.classList.remove('show'); }
+  });
+});
+const header = document.getElementById('siteHeader');
+if(header){
+  let lastY = 0;
+  window.addEventListener('scroll', ()=>{
+    const y = window.scrollY || document.documentElement.scrollTop;
+    if (y > 80 && lastY <= 80) header.classList.add('shrink');
+    else if (y <= 80 && lastY > 80) header.classList.remove('shrink');
+    lastY = y;
+  });
+}
+
+// Theme selector (footer)
+const themeSelect = document.getElementById('themeSelect');
+const htmlEl = document.documentElement;
+function applyTheme(theme){
+  if(!theme) return;
+  htmlEl.setAttribute('data-theme', theme);
+  try{ localStorage.setItem('dpas_theme', theme); }catch{}
+}
+if(themeSelect){
+  let initial = 'greige';
+  try{
+    const saved = localStorage.getItem('dpas_theme');
+    if (saved) initial = saved;
+  }catch{}
+  themeSelect.value = initial;
+  applyTheme(initial);
+  themeSelect.addEventListener('change', ()=>applyTheme(themeSelect.value));
+}
+
+// --- Calculator logic (as v4.1) ---
+const TAX_TABLES = {
+  "2025": { EMP:[{upTo:10000,rate:.09},{upTo:20000,rate:.22},{upTo:30000,rate:.28},{upTo:40000,rate:.36},{upTo:Infinity,rate:.44}],
+            RENT:[{upTo:12000,rate:.15},{upTo:35000,rate:.35},{upTo:Infinity,rate:.45}] },
+  "2024": { EMP:[{upTo:10000,rate:.09},{upTo:20000,rate:.22},{upTo:30000,rate:.28},{upTo:40000,rate:.36},{upTo:Infinity,rate:.44}],
+            RENT:[{upTo:12000,rate:.15},{upTo:35000,rate:.35},{upTo:Infinity,rate:.45}] }
+};
+function childrenCredit(c){ if(c<=0)return 777; if(c===1)return 900; if(c===2)return 1120; if(c===3)return 1340; if(c===4)return 1580; if(c===5)return 1780; return 1780+(c-5)*220; }
+function phasedCredit(credit,salary,children){ if(children>=5) return credit; const excess=Math.max(0,(salary||0)-12000); const steps=Math.floor(excess/1000); return Math.max(0, credit - steps*20); }
+function calcProgressiveDetailed(amount, brackets){
+  let remaining=Math.max(0,amount||0), prev=0, rows=[], total=0;
+  for(const b of brackets){
+    const upToLabel = (b.upTo===Infinity) ? 'και άνω' : b.upTo.toLocaleString('el-GR');
+    const lower = (prev+1).toLocaleString('el-GR');
+    const span = b.upTo===Infinity ? Infinity : b.upTo-prev;
+    const part = Math.min(remaining,span);
+    if(part>0){
+      const tax = Math.round(part*b.rate);
+      rows.push({range: (b.upTo===Infinity? `${lower} € και άνω` : `${lower}–${upToLabel} €`), amount:part, rate:b.rate, tax});
+      total += tax; remaining -= part;
+    }
+    if(b.upTo!==Infinity) prev=b.upTo;
+    if(remaining<=0) break;
+  }
+  return {rows, total};
+}
+function fmt(n){ return new Intl.NumberFormat('el-GR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n||0); }
+function tableToCSV(tbody){
+  const head=['Κλίμακες Φορολογίας','Ποσό','Συντελεστής','Φόρος'];
+  const rows=[...tbody.querySelectorAll('tr')].map(tr=>[...tr.querySelectorAll('td')].map(td=>td.textContent));
+  return [head, ...rows].map(r=>r.join(';')).join('\n');
+}
+
+const elYear=document.getElementById('taxYear');
+const elAdv=document.getElementById('advanceRate');
+const elDuty=document.getElementById('businessDuty');
+const elSalary=document.getElementById('incSalary');
+const elBus=document.getElementById('incBusiness');
+const elRent=document.getElementById('incRental');
+const elChildren=document.getElementById('children');
+const elPrepaid=document.getElementById('prepaid');
+const elCredits=document.getElementById('credits');
+
+const outSalary=document.getElementById('taxSalary');
+const outBusiness=document.getElementById('taxBusiness');
+const outAdvance=document.getElementById('taxAdvance');
+const outRent=document.getElementById('taxRental');
+const outDuty=document.getElementById('taxDuty');
+const outPrepaid=document.getElementById('taxPrepaid');
+const outCredits=document.getElementById('taxCredits');
+const outTotal=document.getElementById('taxTotal');
+
+const tblSalary=document.querySelector('#tblSalary tbody');
+const tblBusiness=document.querySelector('#tblBusiness tbody');
+const tblRent=document.querySelector('#tblRental tbody');
+
+function renderRows(tbody,rows){
+  if(!tbody) return;
+  tbody.innerHTML='';
+  rows.forEach(r=>{
+    const tr=document.createElement('tr');
+    const td1=document.createElement('td'); td1.textContent=r.range;
+    const td2=document.createElement('td'); td2.textContent=fmt(r.amount);
+    const td3=document.createElement('td'); td3.textContent=(r.rate*100).toFixed(0)+'%';
+    const td4=document.createElement('td'); td4.textContent=fmt(Math.round(r.tax));
+    tr.append(td1,td2,td3,td4); tbody.appendChild(tr);
+  });
+  if(!rows.length){ const tr=document.createElement('tr'); const td=document.createElement('td'); td.colSpan=4; td.style.textAlign='center'; td.textContent='—'; tr.appendChild(td); tbody.appendChild(tr); }
+}
+
+function calculate(){
+  if(!elYear) return;
+  const year=elYear.value, t=TAX_TABLES[year];
+  const advRate=parseFloat(elAdv.value)||0;
+  const duty=Math.max(0,parseFloat(elDuty.value)||0);
+  const salary=Math.max(0,parseFloat(elSalary.value)||0);
+  const business=Math.max(0,parseFloat(elBus.value)||0);
+  const rental=Math.max(0,parseFloat(elRent.value)||0);
+  const children=Math.max(0,Math.floor(parseFloat(elChildren.value)||0));
+  const prepaid=Math.max(0,parseFloat(elPrepaid.value)||0);
+  const credits=Math.max(0,parseFloat(elCredits.value)||0);
+
+  const detS=calcProgressiveDetailed(salary,t.EMP);
+  const detB=calcProgressiveDetailed(business,t.EMP);
+  const detR=calcProgressiveDetailed(rental,t.RENT);
+
+  const baseCred=childrenCredit(children);
+  const phased=phasedCredit(baseCred,salary,children);
+  const appliedCredit=Math.min(detS.total,Math.round(phased));
+  const taxS_after=Math.max(0,detS.total-appliedCredit);
+
+  const advance=Math.round(detB.total*advRate);
+  const grossTotal=taxS_after+detB.total+detR.total+advance+duty;
+  const final=grossTotal-prepaid-credits;
+
+  outSalary.textContent=fmt(taxS_after);
+  outBusiness.textContent=fmt(detB.total);
+  outAdvance.textContent=fmt(advance);
+  outRent.textContent=fmt(detR.total);
+  outDuty.textContent=fmt(duty);
+  outPrepaid.textContent='-'+fmt(prepaid);
+  outCredits.textContent='-'+fmt(credits);
+  outTotal.textContent=(final>=0)?fmt(final):(fmt(Math.abs(final))+' επιστρεπτέο');
+
+  renderRows(tblSalary,detS.rows);
+  renderRows(tblBusiness,detB.rows);
+  renderRows(tblRent,detR.rows);
+}
+document.getElementById('calcBtn')?.addEventListener('click',calculate);
+document.getElementById('clearBtn')?.addEventListener('click',()=>{
+  [elSalary,elBus,elRent,elDuty,elChildren,elPrepaid,elCredits].forEach(el=>el.value='');
+  elAdv.value='0'; elYear.value='2025'; calculate();
+});
+
+// CSV export
+document.getElementById('csvBtn')?.addEventListener('click',()=>{
+  const year=elYear.value; let csv=`Έτος;${year}\n`;
+  csv+=`\nΜισθωτά/Συντάξεις\n`+tableToCSV(document.querySelector('#tblSalary tbody'));
+  csv+=`\n\nΕπιχειρ. δραστηριότητα\n`+tableToCSV(document.querySelector('#tblBusiness tbody'));
+  csv+=`\n\nΑκίνητα\n`+tableToCSV(document.querySelector('#tblRental tbody'));
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a');
+  a.href=url; a.download=`dpas_tax_${year}.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+
+// PRINT — new tab with only calculator
+document.getElementById('printBtn')?.addEventListener('click',()=>{
+  calculate();
+  function tbodyHTML(sel){ return document.querySelector(sel).innerHTML; }
+  const win = window.open('', '_blank');
+  const css = `
     @page{size:auto;margin:12mm}
     body{font-family:'Inter',Arial; margin:24px; color:#111;}
     h1,h2,h3{font-family:'Source Serif 4', Georgia, 'Times New Roman', serif}
@@ -11,21 +182,27 @@ const TAX_TABLES={"2025":{EMP:[{upTo:1e4,rate:.09},{upTo:2e4,rate:.22},{upTo:3e4
     table{width:100%;border-collapse:collapse;margin-top:6px}
     th,td{border:1px solid #ddd;padding:6px 8px;text-align:right}
     th:first-child,td:first-child{text-align:left}
-    th{font-weight:700}
-    .total{font-weight:700;font-size:1.1rem}
-  `,a=document.getElementById("taxYear").value,r=(new Date).toLocaleString("el-GR"),o=document.querySelector(".summary").innerHTML,s=`<!doctype html><html><head><meta charset="utf-8"><title>Εκτύπωση — Υπολογιστής Φόρου</title><style>${n}</style></head>
+    th{font-weight:800}
+    .total{font-weight:800;font-size:1.1rem}
+  `;
+  const year = document.getElementById('taxYear').value;
+  const now = new Date().toLocaleString('el-GR');
+  const summaryHTML = document.querySelector('.summary').innerHTML;
+  const doc = `<!doctype html><html><head><meta charset="utf-8"><title>Εκτύπωση — Υπολογιστής Φόρου</title><style>${css}</style></head>
   <body>
-    <div class="brand"><img src="${document.getElementById("logo").src}" alt="Logo"><div><h2>D.P. Accounting Solutions</h2><div class="muted">Υπολογιστής φόρου — Έτος ${a} • ${r}</div></div></div>
+    <div class="brand"><img src="${document.getElementById('logo').src}" alt="Logo"><div><h2>D.P. Accounting Solutions</h2><div class="muted">Υπολογιστής φόρου — Έτος ${year} • ${now}</div></div></div>
     <div class="grid">
-      <div class="summary">${o}</div>
+      <div class="summary">${summaryHTML}</div>
       <div>
         <h3>Μισθωτά/Συντάξεις</h3>
-        <table><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody>${e("#tblSalary tbody")}</tbody></table>
+        <table><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody>${tbodyHTML('#tblSalary tbody')}</tbody></table>
         <h3>Επιχειρ. δραστηριότητα</h3>
-        <table><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody>${e("#tblBusiness tbody")}</tbody></table>
+        <table><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody>${tbodyHTML('#tblBusiness tbody')}</tbody></table>
         <h3>Ακίνητα</h3>
-        <table><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody>${e("#tblRental tbody")}</tbody></table>
+        <table><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody>${tbodyHTML('#tblRental tbody')}</tbody></table>
       </div>
     </div>
-    <script>window.onload=()=>{{window.print();}}</script>
-  </body></html>`;t.document.open(),t.document.write(s),t.document.close()}),calculate();const form=document.getElementById("contactForm");if(form){const e=["name","email","message"];function t(e,t){const n=form.querySelector(`.error-text[data-for="${e}"]`);n&&(n.textContent=t||"")}function n(){let n=!0;const a=form.elements.name,r=form.elements.email,o=form.elements.message;return t("name",""),t("email",""),t("message",""),a.value.trim()||(t("name","Απαραίτητο πεδίο."),n=!1),r.value.trim()&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(r.value)||(t("email","Μη έγκυρο email."),n=!1),(o.value.trim()&&o.value.trim().length>=10)||(t("message","Γράψε τουλάχιστον 10 χαρακτήρες."),n=!1),n}e.forEach(e=>{form.elements[e]?.addEventListener("input",()=>t(e,""))}),form.addEventListener("submit",e=>{n()||e.preventDefault()})}
+    <script>window.onload=()=>{window.print();}</script>
+  </body></html>`;
+  win.document.open(); win.document.write(doc); win.document.close();
+});
