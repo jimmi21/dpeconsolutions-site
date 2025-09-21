@@ -1,84 +1,11 @@
-/* nav + theme + calculator + print + csv */
-const menuBtn=document.getElementById('menuBtn');const nav=document.getElementById('nav');if(menuBtn)menuBtn.addEventListener('click',()=>nav.classList.toggle('show'));document.getElementById('year')&&(document.getElementById('year').textContent=(new Date).getFullYear());document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=a.getAttribute('href').slice(1),n=document.getElementById(t);n&&(e.preventDefault(),n.scrollIntoView({behavior:"smooth",block:"start"}),nav?.classList.remove("show"))})});const header=document.getElementById('siteHeader');if(header){let e=0;window.addEventListener('scroll',()=>{const t=window.scrollY||document.documentElement.scrollTop;t>80&&e<=80?header.classList.add('shrink'):t<=80&&e>80&&header.classList.remove('shrink'),e=t})}const themeSelect=document.getElementById('themeSelect'),htmlEl=document.documentElement;function applyTheme(e){e&&(htmlEl.setAttribute('data-theme',e),localStorage.setItem('dpas_theme',e))}if(themeSelect){let e=localStorage.getItem('dpas_theme')||'dark';themeSelect.value=e,applyTheme(e),themeSelect.addEventListener('change',()=>applyTheme(themeSelect.value))}
-const TAX_TABLES={"2025":{EMP:[{upTo:1e4,rate:.09},{upTo:2e4,rate:.22},{upTo:3e4,rate:.28},{upTo:4e4,rate:.36},{upTo:1/0,rate:.44}],RENT:[{upTo:12e3,rate:.15},{upTo:35e3,rate:.35},{upTo:1/0,rate:.45}]},"2024":{EMP:[{upTo:1e4,rate:.09},{upTo:2e4,rate:.22},{upTo:3e4,rate:.28},{upTo:4e4,rate:.36},{upTo:1/0,rate:.44}],RENT:[{upTo:12e3,rate:.15},{upTo:35e3,rate:.35},{upTo:1/0,rate:.45}]}};function childrenCredit(e){return e<=0?777:1===e?900:2===e?1120:3===e?1340:4===e?1580:5===e?1780:1780+220*(e-5)}function phasedCredit(e,t,n){if(n>=5)return e;const a=Math.max(0,(t||0)-12e3),r=Math.floor(a/1e3);return Math.max(0,e-20*r)}function calcProgressiveDetailed(e,t){let n=Math.max(0,e||0),a=0,r=[],o=0;for(const e of t){const t=1/0===e.upTo?"και άνω":e.upTo.toLocaleString("el-GR"),s=(a+1).toLocaleString("el-GR"),l=1/0===e.upTo?1/0:e.upTo-a,i=Math.min(n,l);if(i>0){const t=Math.round(i*e.rate);r.push({range:1/0===e.upTo?`${s} € και άνω`:`${s}–${t} €`,amount:i,rate:e.rate,tax:t}),o+=t,n-=i}if(e.upTo!==1/0&&(a=e.upTo),n<=0)break}return{rows:r,total:o}}function fmt(e){return new Intl.NumberFormat("el-GR",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(e||0)}function tableToCSV(e){const t=["Κλίμακες Φορολογίας","Ποσό","Συντελεστής","Φόρος"],n=[...e.querySelectorAll("tr")].map(e=>[...e.querySelectorAll("td")].map(e=>e.textContent));return[t,...n].map(e=>e.join(";")).join("\n")}const elYear=document.getElementById("taxYear"),elAdv=document.getElementById("advanceRate"),elDuty=document.getElementById("businessDuty"),elSalary=document.getElementById("incSalary"),elBus=document.getElementById("incBusiness"),elRent=document.getElementById("incRental"),elChildren=document.getElementById("children"),elPrepaid=document.getElementById("prepaid"),elCredits=document.getElementById("credits"),outSalary=document.getElementById("taxSalary"),outBusiness=document.getElementById("taxBusiness"),outAdvance=document.getElementById("taxAdvance"),outRent=document.getElementById("taxRental"),outDuty=document.getElementById("taxDuty"),outPrepaid=document.getElementById("taxPrepaid"),outCredits=document.getElementById("taxCredits"),outTotal=document.getElementById("taxTotal"),tblSalary=document.querySelector("#tblSalary tbody"),tblBusiness=document.querySelector("#tblBusiness tbody"),tblRent=document.querySelector("#tblRental tbody");function renderRows(e,t){if(!e)return;e.innerHTML="",t.forEach(t=>{const n=document.createElement("tr"),a=document.createElement("td");a.textContent=t.range;const r=document.createElement("td");r.textContent=fmt(t.amount);const o=document.createElement("td");o.textContent=(100*t.rate).toFixed(0)+"%";const s=document.createElement("td");s.textContent=fmt(Math.round(t.tax)),n.append(a,r,o,s),e.appendChild(n)}),t.length||(()=>{const t=document.createElement("tr"),n=document.createElement("td");n.colSpan=4,n.style.textAlign="center",n.textContent="—",t.appendChild(n),e.appendChild(t)})()}function calculate(){if(!elYear)return;const e=elYear.value,t=TAX_TABLES[e],n=parseFloat(elAdv.value)||0,a=Math.max(0,parseFloat(elDuty.value)||0),r=Math.max(0,parseFloat(elSalary.value)||0),o=Math.max(0,parseFloat(elBus.value)||0),s=Math.max(0,parseFloat(elRent.value)||0),l=Math.max(0,Math.floor(parseFloat(elChildren.value)||0)),i=Math.max(0,parseFloat(elPrepaid.value)||0),c=Math.max(0,parseFloat(elCredits.value)||0),d=calcProgressiveDetailed(r,t.EMP),u=calcProgressiveDetailed(o,t.EMP),m=calcProgressiveDetailed(s,t.RENT),y=childrenCredit(l),p=phasedCredit(y,r,l),h=Math.min(d.total,Math.round(p)),g=Math.max(0,d.total-h),v=Math.round(u.total*n),f=g+u.total+m.total+v+a,b=f-i-c;outSalary.textContent=fmt(g),outBusiness.textContent=fmt(u.total),outAdvance.textContent=fmt(v),outRent.textContent=fmt(m.total),outDuty.textContent=fmt(a),outPrepaid.textContent="-"+fmt(i),outCredits.textContent="-"+fmt(c),outTotal.textContent=b>=0?fmt(b):fmt(Math.abs(b))+" επιστρεπτέο",renderRows(tblSalary,d.rows),renderRows(tblBusiness,u.rows),renderRows(tblRent,m.rows)}document.getElementById("calcBtn")?.addEventListener("click",calculate),document.getElementById("clearBtn")?.addEventListener("click",()=>{[elSalary,elBus,elRent,elDuty,elChildren,elPrepaid,elCredits].forEach(e=>e.value=""),elAdv.value="0",elYear.value="2025",calculate()}),document.getElementById("csvBtn")?.addEventListener("click",()=>{const e=elYear.value;let t=`Έτος;${e}\n`;t+=`\nΜισθωτά/Συντάξεις\n`+tableToCSV(document.querySelector("#tblSalary tbody")),t+=`\n\nΕπιχειρ. δραστηριότητα\n`+tableToCSV(document.querySelector("#tblBusiness tbody")),t+=`\n\nΑκίνητα\n`+tableToCSV(document.querySelector("#tblRental tbody"));const n=new Blob([t],{type:"text/csv;charset=utf-8;"}),a=URL.createObjectURL(n),r=document.createElement("a");r.href=a,r.download=`dpas_tax_${e}.csv`,document.body.appendChild(r),r.click(),r.remove(),URL.revokeObjectURL(a)}),document.getElementById("printBtn")?.addEventListener("click",()=>{function e(e){return document.querySelector(e).innerHTML}calculate();const t=window.open("","_blank"),n=`
-    @page{size:auto;margin:12mm}
-    body{font-family:'Inter',Arial; margin:24px; color:#111;}
-    h1,h2,h3{font-family:'Source Serif 4', Georgia, 'Times New Roman', serif}
-    .brand{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-    .brand img{height:96px;border-radius:12px}
-    .muted{color:#555}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .summary{border:1px solid #ddd;border-radius:10px;padding:12px}
-    table{width:100%;border-collapse:collapse;margin-top:6px}
-    th,td{border:1px solid #ddd;padding:6px 8px;text-align:right}
-    th:first-child,td:first-child{text-align:left}
-    th{font-weight:700}
-    .total{font-weight:700;font-size:1.1rem}
-  `,a=document.getElementById("taxYear").value,r=(new Date).toLocaleString("el-GR"),o=document.querySelector(".summary").innerHTML,s=`<!doctype html><html><head><meta charset="utf-8"><title>Εκτύπωση — Υπολογιστής Φόρου</title><style>${n}</style></head>
-  <body>
-    <div class="brand"><img src="${document.getElementById("logo").src}" alt="Logo"><div><h2>D.P. Accounting Solutions</h2><div class="muted">Υπολογιστής φόρου — Έτος ${a} • ${r}</div></div></div>
-    <div class="grid">
-      <div class="summary">${o}</div>
-      <div>
-        <h3>Μισθωτά/Συντάξεις</h3>
-        <table><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody>${e("#tblSalary tbody")}</tbody></table>
-        <h3>Επιχειρ. δραστηριότητα</h3>
-        <table><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody>${e("#tblBusiness tbody")}</tbody></table>
-        <h3>Ακίνητα</h3>
-        <table><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody>${e("#tblRental tbody")}</tbody></table>
-      </div>
-    </div>
-    <script>window.onload=()=>{{window.print();}}</script>
-  </body></html>`;t.document.open(),t.document.write(s),t.document.close()});
-
-/* Onboarding checklist generator */
-(function(){
-  const obService=document.getElementById('obService');
-  const obEntity=document.getElementById('obEntity');
-  const obStart=document.getElementById('obStart');
-  const obList=document.getElementById('obList');
-  function makeList(service,entity,start){
-    const L=[]; const startTxt=start?` (από ${start})`:"";
-    const common=["ΑΦΜ/ΔΟΥ","Στοιχεία επιχείρησης (επωνυμία, έδρα)","Στοιχεία επικοινωνίας υπευθύνου"];
-    const accounting=["Πρόσβαση στο myAADE","Βιβλία προηγούμενης περιόδου","IBAN για πληρωμές/επιστροφές"];
-    const tax=["Δηλώσεις προηγούμενου έτους","Εκκρεμείς πράξεις/ρυθμίσεις","Εξουσιοδότηση στο myAADE"];
-    const payroll=["Στοιχεία εργοδοσίας στο ΕΡΓΑΝΗ","Συμβάσεις/μισθολόγια","Ενεργά προγράμματα ΟΑΕΔ (εφόσον υπάρχουν)"];
-    const funding=["Περιγραφή επένδυσης/στόχου","Οικονομικά στοιχεία τελευταίας χρήσης","Προσφορές/τεχνικά στοιχεία (αν υπάρχουν)"];
-    const compensation=["Καταγραφή ζημιάς & αποδεικτικά","Φωτογραφικό υλικό/εκτιμήσεις","Σχετικά παραστατικά"];
-    const settlement=["Αναλυτική κατάσταση οφειλών","Κινήσεις τραπεζών","Στοιχεία εμπράγματων/εγγυήσεων"];
-    L.push(...common);
-    const byService={accounting,tax,payroll,funding,compensation,settlement}[service]||[];
-    L.push(...byService);
-    if(entity==='partnership') L.push("Καταστατικό & τυχόν τροποποιήσεις");
-    if(entity==='company') L.push("Καταστατικό/ΦΕΚ & πρακτικά ΔΣ/ΓΣ (όπου απαιτούνται)");
-    return L.map(x=>`<li>${x}${startTxt}</li>`).join("");
-  }
-  document.getElementById('obGenerate')?.addEventListener('click',()=>{
-    obList.innerHTML = makeList(obService.value, obEntity.value, obStart.value);
-  });
-  document.getElementById('obCopy')?.addEventListener('click',()=>{
-    const text=[...obList.querySelectorAll('li')].map(li=>`• ${li.textContent}`).join('\n');
-    navigator.clipboard?.writeText(text);
-  });
-  document.getElementById('obPrint')?.addEventListener('click',()=>{
-    const w=window.open('','_blank');
-    const html=`<!doctype html><html><head><meta charset="utf-8"><title>Checklist</title></head><body><h3>Onboarding checklist</h3><ul>${obList.innerHTML}</ul><script>window.onload=()=>{window.print()}</script></body></html>`;
-    w.document.write(html); w.document.close();
-  });
-})();
-
-/* 15' consultation ICS generator */
-(function(){
-  const btn=document.getElementById('icsBtn');
-  if(!btn) return;
-  btn.addEventListener('click',()=>{
-    const dt = document.getElementById('meetAt').value;
-    const note = (document.getElementById('meetNote').value||'').replace(/\n/g,' ');
-    if(!dt) return;
-    const start=new Date(dt);
-    const end=new Date(start.getTime()+15*60000);
-    function fmt(d){return d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z'}
-    const ics = `BEGIN:VCALENDAR
+/* Minimal v5 rebuild: nav, theme (greige default), booking (.ics + email + quick slots), calculator (persist/print/csv) */
+const menuBtn=document.getElementById('menuBtn');const nav=document.getElementById('nav');menuBtn&&menuBtn.addEventListener('click',()=>nav.classList.toggle('show'));document.getElementById('year')&&(document.getElementById('year').textContent=(new Date).getFullYear());document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=a.getAttribute('href').slice(1),n=document.getElementById(t);n&&(e.preventDefault(),n.scrollIntoView({behavior:"smooth",block:"start"}),nav?.classList.remove("show"))})});
+const themeSelect=document.getElementById('themeSelect'),htmlEl=document.documentElement;function applyTheme(e){e&&(htmlEl.setAttribute('data-theme',e),localStorage.setItem('dpas_theme',e))}if(themeSelect){let e=localStorage.getItem('dpas_theme')||'greige';themeSelect.value=e,applyTheme(e),themeSelect.addEventListener('change',()=>applyTheme(themeSelect.value))}
+document.querySelector('[data-jump="meeting"]')?.addEventListener('click',()=>{document.getElementById('meeting')?.scrollIntoView({behavior:'smooth',block:'start'})});
+(function(){const btn=document.getElementById('meetBook');if(!btn)return;const f=document.getElementById('meetForm'),dt=document.getElementById('meetAt'),name=document.getElementById('meetName'),contact=document.getElementById('meetContact'),note=document.getElementById('meetNote');function fmt(d){return d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z'}
+(function(){const cont=document.getElementById('quickSlots');if(!cont||!dt)return;function next(){const now=new Date();function at(day,h){const d=new Date();d.setDate(now.getDate()+day);d.setHours(h,0,0,0);return d}return[at(0,11),at(0,17),at(1,11),at(1,17)].filter(d=>d.getTime()>Date.now()).slice(0,4)}function label(d){return d.toLocaleDateString('el-GR',{weekday:'short',day:'2-digit',month:'2-digit'})+' • '+d.toLocaleTimeString('el-GR',{hour:'2-digit',minute:'2-digit'})}const list=next();if(list.length){cont.innerHTML='<div class="slot-wrap"></div>';const w=cont.querySelector('.slot-wrap');list.forEach(s=>{const b=document.createElement('button');b.type='button';b.className='btn small ghost slot-btn';b.textContent=label(s);b.addEventListener('click',()=>{dt.value=new Date(s.getTime()-(new Date().getTimezoneOffset()*60000)).toISOString().slice(0,16);dt.dispatchEvent(new Event('change'))});w.appendChild(b)})}})();
+const replyto=document.getElementById('meet_hidden_replyto');function sync(){const v=(contact.value||'').trim();replyto.value=v.includes('@')?v:''}contact.addEventListener('input',sync);sync();
+btn.addEventListener('click',e=>{e.preventDefault();if(!dt.value||!contact.value){alert('Συμπλήρωσε ημερομηνία/ώρα και ένα στοιχείο επικοινωνίας.');return}const start=new Date(dt.value),end=new Date(start.getTime()+15*60000),ics=`BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//DPAS//Meeting//EL
 BEGIN:VEVENT
@@ -87,29 +14,8 @@ DTSTAMP:${fmt(new Date())}
 DTSTART:${fmt(start)}
 DTEND:${fmt(end)}
 SUMMARY:Σύντομη γνωριμία — D.P. Accounting Solutions
-DESCRIPTION:${note}
+DESCRIPTION:${(note.value||'').replace(/\n/g,' ')}
 LOCATION:Τηλεφωνικά: 2431076222 — Email: dpeconsolutions@gmail.com
 END:VEVENT
-END:VCALENDAR`;
-    const blob=new Blob([ics],{type:"text/calendar"});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url; a.download="dpas_meeting.ics"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  });
-})();
-
-/* Calculator: persist inputs */
-(function(){
-  const fields=['taxYear','advanceRate','businessDuty','incSalary','incBusiness','incRental','children','prepaid','credits'];
-  const key='dpas_calc';
-  try{
-    const saved=JSON.parse(localStorage.getItem(key)||'{}');
-    fields.forEach(id=>{ if(saved[id]!=null && document.getElementById(id)) document.getElementById(id).value=saved[id]; });
-  }catch(e){}
-  function save(){
-    const obj={};
-    fields.forEach(id=>{ const el=document.getElementById(id); if(el) obj[id]=el.value; });
-    try{ localStorage.setItem(key, JSON.stringify(obj)); }catch(e){}
-  }
-  fields.forEach(id=>{ document.getElementById(id)?.addEventListener('change',save); document.getElementById(id)?.addEventListener('input',save); });
-})();
+END:VCALENDAR`;const blob=new Blob([ics],{type:"text/calendar"}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download="dpas_meeting.ics";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);document.getElementById('meet_hidden_dt').value=start.toLocaleString('el-GR');document.getElementById('meet_hidden_name').value=name.value||'-';document.getElementById('meet_hidden_contact').value=contact.value;document.getElementById('meet_hidden_note').value=note.value||'-';const tempTarget='_meetSubmit',prevTarget=f.getAttribute('target');f.setAttribute('target',tempTarget);const iframe=document.createElement('iframe');iframe.name=tempTarget;iframe.style.display='none';document.body.appendChild(iframe);btn.textContent='Έγινε κράτηση — δες το .ics';setTimeout(()=>{btn.textContent='Κράτηση 15’ & λήψη .ics'},2500);f.submit();setTimeout(()=>{document.body.removeChild(iframe);f.setAttribute('target',prevTarget||'_blank')},3500)})})();
+const TAX_TABLES={"2025":{EMP:[{upTo:1e4,rate:.09},{upTo:2e4,rate:.22},{upTo:3e4,rate:.28},{upTo:4e4,rate:.36},{upTo:1/0,rate:.44}],RENT:[{upTo:12e3,rate:.15},{upTo:35e3,rate:.35},{upTo:1/0,rate:.45}]},"2024":{EMP:[{upTo:1e4,rate:.09},{upTo:2e4,rate:.22},{upTo:3e4,rate:.28},{upTo:4e4,rate:.36},{upTo:1/0,rate:.44}],RENT:[{upTo:12e3,rate:.15},{upTo:35e3,rate:.35},{upTo:1/0,rate:.45}]}};function childrenCredit(k){return k<=0?777:1===k?900:2===k?1120:3===k?1340:4===k?1580:5===k?1780:1780+220*(k-5)}function phasedCredit(base,salary,kids){if(kids>=5)return base;const over=Math.max(0,(salary||0)-12e3),steps=Math.floor(over/1e3);return Math.max(0,base-20*steps)}function calcProg(amount,table){let n=Math.max(0,amount||0),prev=0,rows=[],tax=0;for(const b of table){const cap=b.upTo===1/0?1/0:b.upTo-prev,s=Math.min(n,cap);if(s>0){const t=Math.round(s*b.rate);rows.push({range:b.upTo===1/0?`${(prev+1).toLocaleString('el-GR')} € και άνω`:`${(prev+1).toLocaleString('el-GR')}–${b.upTo.toLocaleString('el-GR')} €`,amount:s,rate:b.rate,tax:t});tax+=t;n-=s}if(b.upTo!==1/0)prev=b.upTo;if(n<=0)break}return{rows,total:tax}}function fmt(x){return new Intl.NumberFormat('el-GR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(x||0)}function tableCSV(tb){const head=["Κλίμακες Φορολογίας","Ποσό","Συντελεστής","Φόρος"];const rows=[...tb.querySelectorAll("tr")].map(tr=>[...tr.querySelectorAll("td")].map(td=>td.textContent));return[...([head]),...rows].map(r=>r.join(";")).join("\n")}const el={taxYear:document.getElementById('taxYear'),advanceRate:document.getElementById('advanceRate'),businessDuty:document.getElementById('businessDuty'),incSalary:document.getElementById('incSalary'),incBusiness:document.getElementById('incBusiness'),incRental:document.getElementById('incRental'),children:document.getElementById('children'),prepaid:document.getElementById('prepaid'),credits:document.getElementById('credits')},out={salary:document.getElementById('taxSalary'),business:document.getElementById('taxBusiness'),advance:document.getElementById('taxAdvance'),rental:document.getElementById('taxRental'),duty:document.getElementById('taxDuty'),prepaid:document.getElementById('taxPrepaid'),credits:document.getElementById('taxCredits'),total:document.getElementById('taxTotal')},tb={salary:document.querySelector('#tblSalary tbody'),business:document.querySelector('#tblBusiness tbody'),rent:document.querySelector('#tblRental tbody')};function renderRows(tbody,rows){if(!tbody)return;tbody.innerHTML='';if(!rows.length){const tr=document.createElement('tr');const td=document.createElement('td');td.colSpan=4;td.style.textAlign='center';td.textContent='—';tr.appendChild(td);tbody.appendChild(tr);return}rows.forEach(r=>{const tr=document.createElement('tr'),c1=document.createElement('td'),c2=document.createElement('td'),c3=document.createElement('td'),c4=document.createElement('td');c1.textContent=r.range;c2.textContent=fmt(r.amount);c3.textContent=(100*r.rate).toFixed(0)+'%';c4.textContent=fmt(Math.round(r.tax));tr.append(c1,c2,c3,c4);tbody.appendChild(tr)})}function calculate(){const yr=el.taxYear.value,t=TAX_TABLES[yr],adv=parseFloat(el.advanceRate.value)||0,duty=Math.max(0,parseFloat(el.businessDuty.value)||0),s=Math.max(0,parseFloat(el.incSalary.value)||0),b=Math.max(0,parseFloat(el.incBusiness.value)||0),r=Math.max(0,parseFloat(el.incRental.value)||0),kids=Math.max(0,Math.floor(parseFloat(el.children.value)||0)),pre=Math.max(0,parseFloat(el.prepaid.value)||0),cred=Math.max(0,parseFloat(el.credits.value)||0),sal=calcProg(s,t.EMP),bus=calcProg(b,t.EMP),ren=calcProg(r,t.RENT),base=childrenCredit(kids),ph=phasedCredit(base,s,kids),used=Math.min(sal.total,Math.round(ph)),salAfter=Math.max(0,sal.total-used),advTax=Math.round(bus.total*adv),total=salAfter+bus.total+ren.total+advTax+duty-pre-cred;out.salary.textContent=fmt(salAfter);out.business.textContent=fmt(bus.total);out.advance.textContent=fmt(advTax);out.rental.textContent=fmt(ren.total);out.duty.textContent=fmt(duty);out.prepaid.textContent='-'+fmt(pre);out.credits.textContent='-'+fmt(cred);out.total.textContent=total>=0?fmt(total):fmt(Math.abs(total))+' επιστρεπτέο';renderRows(tb.salary,sal.rows);renderRows(tb.business,bus.rows);renderRows(tb.rent,ren.rows)}document.getElementById('calcBtn')?.addEventListener('click',calculate);document.getElementById('clearBtn')?.addEventListener('click',()=>{['incSalary','incBusiness','incRental','businessDuty','children','prepaid','credits'].forEach(id=>el[id].value='');el.advanceRate.value='0';el.taxYear.value='2025';calculate()});document.getElementById('csvBtn')?.addEventListener('click',()=>{const yr=el.taxYear.value;let csv=`Έτος;${yr}\n`;csv+=`\nΜισθωτά/Συντάξεις\n`+tableCSV(tb.salary);csv+=`\n\nΕπιχειρ. δραστηριότητα\n`+tableCSV(tb.business);csv+=`\n\nΑκίνητα\n`+tableCSV(tb.rent);const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`dpas_tax_${yr}.csv`;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)});
