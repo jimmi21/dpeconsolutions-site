@@ -29,7 +29,7 @@ const TAX_TABLES = {
   "2024": { EMP:[{upTo:10000,rate:.09},{upTo:20000,rate:.22},{upTo:30000,rate:.28},{upTo:40000,rate:.36},{upTo:Infinity,rate:.44}],
             RENT:[{upTo:12000,rate:.15},{upTo:35000,rate:.35},{upTo:Infinity,rate:.45}] }
 };
-function childrenCredit(c){ if(c<=0)return 777; if(c===1)return 900; if(c===2)return 1120; if(c===3)return 1340; if(c===4)return 1580; if(c===5)return 1780; return 1780+(c-5)*220; }
+function childrenCredit(c){ if(c<=0)return 0; if(c===1)return 900; if(c===2)return 1120; if(c===3)return 1340; if(c===4)return 1580; if(c===5)return 1780; return 1780+(c-5)*220; }
 function phasedCredit(credit,salary,children){ if(children>=5) return credit; const excess=Math.max(0,(salary||0)-12000); const steps=Math.floor(excess/1000); return Math.max(0, credit - steps*20); }
 function calcProgressiveDetailed(amount, brackets){
   let remaining=Math.max(0,amount||0), prev=0, rows=[], total=0;
@@ -52,7 +52,7 @@ function fmt(n){ return new Intl.NumberFormat('el-GR',{style:'currency',currency
 function tableToCSV(tbody){
   const head=['Κλίμακες Φορολογίας','Ποσό','Συντελεστής','Φόρος'];
   const rows=[...tbody.querySelectorAll('tr')].map(tr=>[...tr.querySelectorAll('td')].map(td=>td.textContent));
-  return [head, ...rows].map(r=>r.join(';')).join('\\n');
+  return [head, ...rows].map(r=>r.join(';')).join('\n');
 }
 
 const elYear=document.getElementById('taxYear');
