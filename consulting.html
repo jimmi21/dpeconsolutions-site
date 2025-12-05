@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>D.P. Accounting Solutions — Consulting Minimal</title>
   <meta name="description" content="D.P. Accounting Solutions — Consulting Minimal προφίλ." />
+  <meta name="robots" content="index, follow" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Noto+Serif:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles-consulting.css?v=v3.6" />
+  <link rel="stylesheet" href="styles-consulting.css?v=v5.0" />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -129,15 +130,15 @@
             <div class="breakdowns">
               <div class="card">
                 <h4>Μισθωτά/Συντάξεις</h4>
-                <table class="tbl" id="tblSalary"><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody></tbody></table>
+                <table class="tbl" id="tblSalary"><thead><tr><th scope="col">Κλίμακες Φορολογίας</th><th scope="col">Ποσό</th><th scope="col">Συντελεστής</th><th scope="col">Φόρος</th></tr></thead><tbody></tbody></table>
               </div>
               <div class="card">
                 <h4>Επιχειρ. δραστηριότητα</h4>
-                <table class="tbl" id="tblBusiness"><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody></tbody></table>
+                <table class="tbl" id="tblBusiness"><thead><tr><th scope="col">Κλίμακες Φορολογίας</th><th scope="col">Ποσό</th><th scope="col">Συντελεστής</th><th scope="col">Φόρος</th></tr></thead><tbody></tbody></table>
               </div>
               <div class="card">
                 <h4>Ακίνητα</h4>
-                <table class="tbl" id="tblRental"><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody></tbody></table>
+                <table class="tbl" id="tblRental"><thead><tr><th scope="col">Κλίμακες Φορολογίας</th><th scope="col">Ποσό</th><th scope="col">Συντελεστής</th><th scope="col">Φόρος</th></tr></thead><tbody></tbody></table>
               </div>
             </div>
           </div>
@@ -152,7 +153,7 @@
           <form id="contactForm" class="form" action="https://formsubmit.co/dpeconsolutions@gmail.com" method="POST">
             <input type="hidden" name="_subject" value="Νέο μήνυμα από dpas.gr" />
             <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_captcha" value="true" />
             <input type="hidden" name="_next" value="https://jimmi21.github.io/dpeconsolutions-site/thanks.html" />
             <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
             <label>Ονοματεπώνυμο<input type="text" name="name" required /></label>
@@ -179,11 +180,12 @@
   </div>
 
   <footer class="site-footer">
-    <div class="container copyright">
-      <p>© <span id="year"></span> D.P. Accounting Solutions • Λογιστικές Υπηρεσίες</p>
+    <div class="container footer-grid">
+      <div class="footer-col"><p>© <span id="year"></span> D.P. Accounting Solutions • Λογιστικές Υπηρεσίες</p></div>
+      <div class="footer-col"><a href="index.html" class="btn small ghost">Αρχική σελίδα</a></div>
     </div>
   </footer>
 
-  <script src="script-consulting.js?v=v3.6"></script>
+  <script src="script-consulting.js?v=v5.0"></script>
 </body>
 </html>

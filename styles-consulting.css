@@ -88,7 +88,14 @@ h1{font-weight:700} h2{font-weight:700} h3{font-weight:600} h4{font-weight:600}
 .float-cta{position:fixed;right:18px;bottom:18px;display:flex;gap:.5rem;z-index:50}
 
 /* Footer */
-.site-footer{border-top:1px solid var(--line);padding:2rem 0 1rem;background:var(--bg-soft);text-align:center;color:var(--muted)}
+.site-footer{border-top:1px solid var(--line);padding:2rem 0 1rem;background:var(--bg-soft);color:var(--muted)}
+.footer-grid{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-col{text-align:center}@media(min-width:780px){.footer-col:first-child{text-align:left}.footer-col:last-child{text-align:right}}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}@media(max-width:780px){.grid-2{grid-template-columns:1fr}}
+.contact-section{padding:2.5rem 0}.contact-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:1.5rem}
+.contact-list{list-style:none;padding:0;margin:0}.contact-list li{padding:.6rem 0;border-bottom:1px solid var(--line)}.contact-list li:last-child{border-bottom:none}.contact-list a{color:var(--accent);text-decoration:none}.contact-list a:hover{text-decoration:underline}
+.form-error{color:#dc2626;font-size:.875rem;margin-top:.25rem;display:none}.form-error.active{display:block}
+input.invalid,textarea.invalid,select.invalid{border-color:#dc2626!important}
 
 /* Print fallback (only calculator) */
 @media print{

@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0b0b0c" />
   <meta name="description" content="Πλήρης λογιστική εξυπηρέτηση για επιχειρήσεις: τήρηση απλογραφικών & διπλογραφικών βιβλίων, δηλώσεις, μισθοδοσία. Υποστήριξη φακέλων χρηματοδοτικών και αποζημιώσεων." />
+  <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://jimmi21.github.io/dpeconsolutions-site/index.html" />
   <meta property="og:locale" content="el_GR" />
   <meta property="og:type" content="website" />
@@ -31,7 +32,7 @@
         <a href="#calculator">Υπολογιστής Φόρου</a>
         <a href="#meeting" class="btn small">Ραντεβού/Επικοινωνία</a>
       </nav>
-      <button id="menuBtn" class="menu-btn">☰</button>
+      <button id="menuBtn" class="menu-btn" aria-label="Μενού πλοήγησης">☰</button>
     </div>
   </header>
 
@@ -105,9 +106,9 @@
               <div class="row total"><span>Συνολικό:</span><strong id="taxTotal">—</strong></div>
             </div>
             <div class="breakdowns">
-              <div class="card"><h4>Μισθωτά/Συντάξεις</h4><table class="tbl" id="tblSalary"><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody></tbody></table></div>
-              <div class="card"><h4>Επιχειρ. δραστηριότητα</h4><table class="tbl" id="tblBusiness"><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody></tbody></table></div>
-              <div class="card"><h4>Ακίνητα</h4><table class="tbl" id="tblRental"><thead><tr><th>Κλίμακες Φορολογίας</th><th>Ποσό</th><th>Συντελεστής</th><th>Φόρος</th></tr></thead><tbody></tbody></table></div>
+              <div class="card"><h4>Μισθωτά/Συντάξεις</h4><table class="tbl" id="tblSalary"><thead><tr><th scope="col">Κλίμακες Φορολογίας</th><th scope="col">Ποσό</th><th scope="col">Συντελεστής</th><th scope="col">Φόρος</th></tr></thead><tbody></tbody></table></div>
+              <div class="card"><h4>Επιχειρ. δραστηριότητα</h4><table class="tbl" id="tblBusiness"><thead><tr><th scope="col">Κλίμακες Φορολογίας</th><th scope="col">Ποσό</th><th scope="col">Συντελεστής</th><th scope="col">Φόρος</th></tr></thead><tbody></tbody></table></div>
+              <div class="card"><h4>Ακίνητα</h4><table class="tbl" id="tblRental"><thead><tr><th scope="col">Κλίμακες Φορολογίας</th><th scope="col">Ποσό</th><th scope="col">Συντελεστής</th><th scope="col">Φόρος</th></tr></thead><tbody></tbody></table></div>
             </div>
           </div>
         </div>
@@ -123,14 +124,14 @@
             <form id="meetForm" class="form" action="https://formsubmit.co/dpeconsolutions@gmail.com" method="POST" target="_blank" onsubmit="return false">
               <input type="hidden" name="_subject" value="Νέα κράτηση 15’ γνωριμίας — D.P. Accounting Solutions" />
               <input type="hidden" name="_template" value="table" />
-              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_captcha" value="true" />
               <input type="hidden" name="_next" value="https://jimmi21.github.io/dpeconsolutions-site/thanks.html" />
               <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
               <div class="calc-controls">
                 <div class="row">
-                  <label>Ημερομηνία & ώρα<input type="datetime-local" id="meetAt" required></label>
+                  <label>Ημερομηνία & ώρα<input type="datetime-local" id="meetAt" required><span class="form-error" id="meetAtError">Απαιτείται ημερομηνία/ώρα</span></label>
                   <label>Όνομα (προαιρετικά)<input type="text" id="meetName"></label>
-                  <label>Τηλέφωνο ή Email<input type="text" id="meetContact" required><small class="error-text">Αν δηλώσεις email, θα λάβεις επιβεβαίωση.</small></label>
+                  <label>Τηλέφωνο ή Email<input type="text" id="meetContact" required><span class="form-error" id="meetContactError">Απαιτείται στοιχείο επικοινωνίας</span><small class="note">Αν δηλώσεις email, θα λάβεις επιβεβαίωση.</small></label>
                 </div>
                 <div class="row"><label>Σημείωση (προαιρετικά)<input type="text" id="meetNote"></label></div>
                 <div class="row" id="quickSlots" aria-live="polite"></div>
