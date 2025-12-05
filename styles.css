@@ -43,4 +43,5 @@ input.invalid,textarea.invalid,select.invalid{border-color:#dc2626!important;box
 .result-head{font-weight:700;margin-bottom:.5rem;color:var(--muted)}.summary .total{font-size:1.1rem}
 .actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}
 .alt{background:var(--bg-soft)}
+.calc-progress{height:3px;background:var(--line);border-radius:2px;margin-bottom:.8rem;overflow:hidden;opacity:0;transition:opacity .2s}.calc-progress.active{opacity:1}.calc-progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:2px;animation:progress .4s ease-out forwards}@keyframes progress{0%{width:0}100%{width:100%}}
 .scroll-top{position:fixed;bottom:5rem;right:1.2rem;width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;opacity:0;visibility:hidden;transition:all .3s ease;z-index:60;font-size:1.2rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.15)}.scroll-top:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(0,0,0,.2)}.scroll-top.visible{opacity:1;visibility:visible}
