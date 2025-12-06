@@ -65,3 +65,31 @@ input.invalid,textarea.invalid,select.invalid{border-color:#dc2626!important;box
 .vat-results .row{display:flex;justify-content:space-between;padding:.4rem 0}
 .vat-results .sep{border-top:1px dashed var(--line);margin:.5rem 0}
 .vat-results .total{font-size:1.1rem;font-weight:700}
+/* Blog Styles */
+.blog-grid{margin-top:1rem}
+.blog-card{position:relative}
+.blog-card h3{margin:.5rem 0}
+.blog-card h3 a{color:var(--ink);text-decoration:none}.blog-card h3 a:hover{color:var(--accent)}
+.blog-tag{display:inline-block;background:var(--accent);color:#111;padding:.2rem .6rem;border-radius:20px;font-size:.75rem;font-weight:700;margin-bottom:.5rem}
+.blog-excerpt{color:var(--muted);font-size:.95rem;margin-bottom:.8rem}
+.blog-meta{display:flex;gap:1rem;font-size:.85rem;color:var(--muted-2)}
+/* Article Styles */
+.breadcrumb{margin-bottom:1.5rem}.breadcrumb a{color:var(--accent);text-decoration:none}.breadcrumb a:hover{text-decoration:underline}
+.article-header{margin-bottom:2rem}
+.article-header h1{margin:.5rem 0 1rem}
+.article-meta{display:flex;gap:1rem;color:var(--muted);font-size:.9rem}
+.article-content{max-width:72ch}.article-content h2{margin-top:2rem;margin-bottom:.8rem}.article-content h3{margin-top:1.5rem}
+.article-content ul,.article-content ol{margin:1rem 0;padding-left:1.5rem}
+.article-content li{margin:.4rem 0}
+/* FAQ Accordion */
+.faq{border:1px solid var(--line);border-radius:10px;margin:.5rem 0;background:var(--card)}
+.faq summary{padding:1rem;cursor:pointer;font-weight:600;list-style:none}.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:'+ ';color:var(--accent)}
+.faq[open] summary::before{content:'− '}
+.faq p{padding:0 1rem 1rem;margin:0;color:var(--muted)}
+/* Service Details */
+.service-details h2{margin-top:2rem;margin-bottom:1rem}
+.service-details ul{margin:.5rem 0;padding-left:1.2rem}
+.service-details li{margin:.3rem 0}
+/* Service Card Links */
+.cards .card h3 a{color:var(--ink);text-decoration:none;transition:color .2s}.cards .card h3 a:hover{color:var(--accent)}
