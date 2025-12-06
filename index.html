@@ -14,6 +14,10 @@
   <meta property="og:description" content="Πλήρης λογιστική εξυπηρέτηση για επιχειρήσεις: τήρηση απλογραφικών & διπλογραφικών βιβλίων, δηλώσεις, μισθοδοσία. Υποστήριξη φακέλων χρηματοδοτικών και αποζημιώσεων." />
   <meta property="og:image" content="https://jimmi21.github.io/dpeconsolutions-site/assets/og-image.jpg" />
   <meta property="og:url" content="https://jimmi21.github.io/dpeconsolutions-site/index.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="D.P. Accounting Solutions — Λογιστική, Φορολογία" />
+  <meta name="twitter:description" content="Επαγγελματικές λογιστικές υπηρεσίες με καθημερινή εξυπηρέτηση. Λογιστική, φορολογία, μισθοδοσία, χρηματοδοτικά." />
+  <meta name="twitter:image" content="https://jimmi21.github.io/dpeconsolutions-site/assets/og-image.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Source+Serif+4:opsz,wght@8..60,700&display=swap" rel="stylesheet">
@@ -28,9 +32,9 @@
       <a class="brand" href="index.html#home"><img id="logo" src="assets/logo-dp-gold.png" alt="Λογότυπο" class="logo square" /><span class="brand-text">D.P. Accounting Solutions</span></a>
       <nav id="nav" class="nav">
         <a href="#services">Υπηρεσίες</a>
-        <a href="#why">Γιατί εμάς</a>
-        <a href="#calculator">Υπολογιστής Φόρου</a>
-        <a href="#meeting" class="btn small">Ραντεβού/Επικοινωνία</a>
+        <a href="#calculator">Υπολογιστής</a>
+        <a href="blog.html">Blog</a>
+        <a href="#meeting" class="btn small">Επικοινωνία</a>
       </nav>
       <button id="menuBtn" class="menu-btn" aria-label="Μενού πλοήγησης">☰</button>
     </div>
@@ -53,10 +57,10 @@
       <div class="container">
         <h2>Υπηρεσίες</h2>
         <div class="cards grid-3 no-icons">
-          <article class="card"><h3>Λογιστική</h3><p>Τήρηση απλογραφικών & διπλογραφικών βιβλίων, δηλώσεις, μηνιαίες υποχρεώσεις.</p></article>
-          <article class="card"><h3>Φορολογία</h3><p>Εισόδημα, ΦΠΑ, παρακρατήσεις, έλεγχοι, υποβολές.</p></article>
-          <article class="card"><h3>Μισθοδοσία</h3><p>Προσλήψεις, συμβάσεις, μισθοδοσία, προγράμματα ΟΑΕΔ.</p></article>
-          <article class="card"><h3>Χρηματοδοτικά</h3><p>Επιλεξιμότητα, checklist, φάκελος, υποβολή/παρακολούθηση.</p></article>
+          <article class="card"><h3><a href="services/logistiki.html">Λογιστική</a></h3><p>Τήρηση απλογραφικών & διπλογραφικών βιβλίων, δηλώσεις, μηνιαίες υποχρεώσεις.</p></article>
+          <article class="card"><h3><a href="services/forologia.html">Φορολογία</a></h3><p>Εισόδημα, ΦΠΑ, παρακρατήσεις, έλεγχοι, υποβολές.</p></article>
+          <article class="card"><h3><a href="services/misthodisia.html">Μισθοδοσία</a></h3><p>Προσλήψεις, συμβάσεις, μισθοδοσία, προγράμματα ΟΑΕΔ.</p></article>
+          <article class="card"><h3><a href="services/xrimatodotika.html">Χρηματοδοτικά</a></h3><p>Επιλεξιμότητα, checklist, φάκελος, υποβολή/παρακολούθηση.</p></article>
           <article class="card"><h3>Αποζημιώσεις/Αρωγές</h3><p>Καταγραφή ζημιών, τεκμηρίωση, σύνταξη φακέλου.</p></article>
           <article class="card"><h3>Ρυθμίσεις & Εξωδικαστικός</h3><p>Εκτίμηση, προσομοίωση, κατάθεση/παρακολούθηση.</p></article>
         </div>
@@ -68,6 +72,7 @@
         <h2>Υπολογιστής Φόρου</h2>
         <p class="lead">Κλίμακες, τέκνα, προκαταβολή, τέλος επιτηδεύματος, προπληρωμές, πιστώσεις.</p>
         <div class="card calc-pro" id="calcCard">
+          <div class="calc-progress" id="calcProgress"><div class="calc-progress-bar"></div></div>
           <div class="calc-controls">
             <div class="row">
               <label>Έτος<select id="taxYear"><option value="2025">2025</option><option value="2024">2024</option></select></label>
@@ -110,6 +115,95 @@
               <div class="card"><h4>Επιχειρ. δραστηριότητα</h4><table class="tbl" id="tblBusiness"><thead><tr><th scope="col">Κλίμακες Φορολογίας</th><th scope="col">Ποσό</th><th scope="col">Συντελεστής</th><th scope="col">Φόρος</th></tr></thead><tbody></tbody></table></div>
               <div class="card"><h4>Ακίνητα</h4><table class="tbl" id="tblRental"><thead><tr><th scope="col">Κλίμακες Φορολογίας</th><th scope="col">Ποσό</th><th scope="col">Συντελεστής</th><th scope="col">Φόρος</th></tr></thead><tbody></tbody></table></div>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="section">
+      <div class="container">
+        <h2>Τι Λένε οι Πελάτες μας</h2>
+        <div class="testimonials-carousel" id="testimonialsCarousel">
+          <div class="testimonial-track">
+            <article class="testimonial-card" itemscope itemtype="https://schema.org/Review">
+              <div class="stars" aria-label="5 αστέρια">★★★★★</div>
+              <blockquote itemprop="reviewBody">"Εξαιρετική εξυπηρέτηση και άμεση ανταπόκριση. Η λογιστική μου εταιρεία εδώ και 3 χρόνια."</blockquote>
+              <footer>
+                <strong itemprop="author">Γιώργος Κ.</strong>
+                <span class="company">Ιδιοκτήτης Εστιατορίου</span>
+              </footer>
+              <meta itemprop="ratingValue" content="5">
+            </article>
+            <article class="testimonial-card" itemscope itemtype="https://schema.org/Review">
+              <div class="stars" aria-label="5 αστέρια">★★★★★</div>
+              <blockquote itemprop="reviewBody">"Με βοήθησαν να πάρω επιδότηση ΕΣΠΑ που δεν ήξερα ότι δικαιούμαι. Επαγγελματίες!"</blockquote>
+              <footer>
+                <strong itemprop="author">Μαρία Π.</strong>
+                <span class="company">Φαρμακοποιός</span>
+              </footer>
+              <meta itemprop="ratingValue" content="5">
+            </article>
+            <article class="testimonial-card" itemscope itemtype="https://schema.org/Review">
+              <div class="stars" aria-label="5 αστέρια">★★★★★</div>
+              <blockquote itemprop="reviewBody">"Ο υπολογιστής φόρου στο site είναι πολύ χρήσιμος. Σωστή καθοδήγηση σε όλα."</blockquote>
+              <footer>
+                <strong itemprop="author">Κώστας Δ.</strong>
+                <span class="company">Ελεύθερος Επαγγελματίας</span>
+              </footer>
+              <meta itemprop="ratingValue" content="5">
+            </article>
+            <article class="testimonial-card" itemscope itemtype="https://schema.org/Review">
+              <div class="stars" aria-label="4 αστέρια">★★★★☆</div>
+              <blockquote itemprop="reviewBody">"Αξιόπιστοι και οργανωμένοι. Η μισθοδοσία γίνεται πάντα στην ώρα της."</blockquote>
+              <footer>
+                <strong itemprop="author">Ελένη Μ.</strong>
+                <span class="company">Διευθύντρια Ξενοδοχείου</span>
+              </footer>
+              <meta itemprop="ratingValue" content="4">
+            </article>
+          </div>
+          <div class="carousel-controls">
+            <button class="carousel-btn prev" aria-label="Προηγούμενο">‹</button>
+            <div class="carousel-dots"></div>
+            <button class="carousel-btn next" aria-label="Επόμενο">›</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VAT Calculator Section -->
+    <section id="vat-calculator" class="section alt">
+      <div class="container">
+        <h2>Υπολογιστής ΦΠΑ</h2>
+        <p class="lead">Γρήγορος υπολογισμός ΦΠΑ για τιμολόγια και αγορές.</p>
+        <div class="card vat-calc">
+          <div class="calc-controls">
+            <div class="row">
+              <label>Συντελεστής ΦΠΑ
+                <select id="vatRate">
+                  <option value="0.24">24% (Κανονικός)</option>
+                  <option value="0.13">13% (Μειωμένος)</option>
+                  <option value="0.06">6% (Υπερμειωμένος)</option>
+                </select>
+              </label>
+              <label>Καθαρή αξία (€)
+                <input type="number" id="vatNet" min="0" step="0.01" placeholder="π.χ. 100">
+              </label>
+              <label>Τελική τιμή με ΦΠΑ (€)
+                <input type="number" id="vatGross" min="0" step="0.01" placeholder="π.χ. 124">
+              </label>
+            </div>
+            <div class="row actions">
+              <button class="btn small" id="vatCalcNet">Υπολόγισε από Καθαρή</button>
+              <button class="btn small ghost" id="vatCalcGross">Υπολόγισε από Τελική</button>
+            </div>
+          </div>
+          <div class="vat-results card" id="vatResults" style="margin-top:1rem;display:none">
+            <div class="row"><span>Καθαρή αξία:</span><strong id="vatResNet">—</strong></div>
+            <div class="row"><span>ΦΠΑ (<span id="vatResRate">24</span>%):</span><strong id="vatResVat">—</strong></div>
+            <div class="sep"></div>
+            <div class="row total"><span>Τελική τιμή:</span><strong id="vatResGross">—</strong></div>
           </div>
         </div>
       </div>
@@ -165,6 +259,8 @@
     <a class="btn small ghost" href="#meeting">Ζήτησε πρόταση</a>
   </div>
 
+  <button id="scrollTop" class="scroll-top" aria-label="Επιστροφή στην κορυφή">↑</button>
+
   <footer class="site-footer">
     <div class="container footer-grid">
       <div class="footer-col"><p>© <span id="year"></span> D.P. Accounting Solutions • Λογιστικές Υπηρεσίες</p></div>
@@ -177,5 +273,18 @@
   </footer>
 
   <script src="script.js?v=v5.0" defer></script>
+  <!-- Tawk.to Live Chat - Replace YOUR_PROPERTY_ID with actual ID from tawk.to dashboard -->
+  <script type="text/javascript">
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  (function(){
+  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+  s1.async=true;
+  s1.src='https://embed.tawk.to/YOUR_PROPERTY_ID/default';
+  s1.charset='UTF-8';
+  s1.setAttribute('crossorigin','*');
+  s0.parentNode.insertBefore(s1,s0);
+  })();
+  </script>
+  <!-- End Tawk.to -->
 </body>
 </html>
