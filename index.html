@@ -94,8 +94,19 @@
               <button class="btn ghost" id="clearBtn">Καθαρισμός</button>
               <button class="btn ghost" id="printBtn">Εκτύπωση / PDF</button>
               <button class="btn ghost" id="csvBtn">Λήψη CSV</button>
+              <button class="btn ghost" id="compareBtn">Σύγκριση Ετών</button>
             </div>
             <p class="note">Ενδεικτικός υπολογισμός.</p>
+          </div>
+          <!-- Year Comparison Results -->
+          <div class="compare-results card" id="compareResults" style="display:none;margin-top:1rem;">
+            <div class="result-head">Σύγκριση 2024 vs 2025</div>
+            <table class="tbl">
+              <thead>
+                <tr><th>Κατηγορία</th><th>2024</th><th>2025</th><th>Διαφορά</th></tr>
+              </thead>
+              <tbody id="compareTbody"></tbody>
+            </table>
           </div>
           <div class="calc-results">
             <div class="summary card">
@@ -265,8 +276,11 @@
     <div class="container footer-grid">
       <div class="footer-col"><p>© <span id="year"></span> D.P. Accounting Solutions • Λογιστικές Υπηρεσίες</p></div>
       <div class="footer-col theme-col">
-        <label class="theme-switch"><span>Θέμα:</span>
+        <label class="theme-switch"><span data-i18n="theme_label">Θέμα:</span>
           <select id="themeSelect"><option value="dark">Σκοτεινό</option><option value="greige" selected>Γκρι‑μπεζ</option><option value="grey">Γκρι</option><option value="light">Φωτεινό</option></select>
+        </label>
+        <label class="lang-switch"><span>🌐</span>
+          <select id="langSelect"><option value="el">Ελληνικά</option><option value="en">English</option></select>
         </label>
       </div>
     </div>
